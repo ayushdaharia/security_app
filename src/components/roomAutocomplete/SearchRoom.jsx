@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import {fetchRoomNameList} from '../../global/apicall/apiCall';
 import {useIsFocused} from '@react-navigation/native';
+import {COLORS} from '../../constants';
 
 const SearchRoom = ({formValues, setFormValues}) => {
   const [roomList, setRoomList] = useState([]);
@@ -22,7 +23,7 @@ const SearchRoom = ({formValues, setFormValues}) => {
     fetchRoomNameList(setRoomList);
   }, [isFocused]);
 
-  console.log({roomList});
+  // console.log({roomList});
 
   const [input, setInput] = useState('');
   const [itemSelected, setItemSelected] = useState(false);
@@ -87,6 +88,7 @@ const SearchRoom = ({formValues, setFormValues}) => {
           }}>
           <TextInput
             onChangeText={onChangeText}
+            placeholderTextColor={COLORS.gray}
             value={input}
             style={{
               height: 40,

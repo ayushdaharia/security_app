@@ -117,7 +117,7 @@ const VisitorMainAP = () => {
         {selectedTab === 1 &&
           (filterPending.length !== 0 ? (
             filterPending.map((item, index) => (
-              <APCardPending data={item} key={index} />
+              <APCardPending data={item} key={index} setFetch={setFetch} />
             ))
           ) : (
             <Text

@@ -1,8 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
-import {useNavigation} from '@react-navigation/core';
-import React, {useState} from 'react';
-import * as RootNavigation from './RootNavigator';
+
+import {Platform} from 'react-native';
+import {saveData} from '../services/apis/postApi';
+import {BASE_URL_C} from '../utils/constantUrl';
+import RootNavigator from './RootNavigator';
 
 export const requestUserPermission = async () => {
   console.log('request user permission fuction');
@@ -18,13 +20,13 @@ export const requestUserPermission = async () => {
 };
 
 const getFcmToken = async () => {
-  var fcmToken = await AsyncStorage.getItem('fcmToken');
-  console.log(fcmToken, 'the old Token');
+  const fcmToken = await AsyncStorage.getItem('fcmToken');
+  console.log('The Old FCM Token:', fcmToken);
   if (!fcmToken) {
     try {
       const fcmToken = await messaging().getToken();
       if (fcmToken) {
-        console.log(fcmToken, 'the new genrated token');
+        console.log('The new genrated FCM token: ', fcmToken);
         await AsyncStorage.setItem('fcmToken', fcmToken);
       }
     } catch (error) {
@@ -33,13 +35,34 @@ const getFcmToken = async () => {
   }
 };
 
+export const saveFCM = async () => {
+  const fcmToken = await AsyncStorage.getItem('fcmToken');
+  const pId = await AsyncStorage.getItem('PATIENT_ID');
+  const url = BASE_URL_C + 'patient/save/token';
+  const os = Platform.OS;
+  const params = {
+    os: 'ANDROID',
+    token: fcmToken,
+    patientId: pId,
+  };
+  const result = await saveData(url, params);
+
+  if (result.error) {
+    console.error('Error sending Data');
+  } else {
+    console.log('success');
+    console.log('saveToken', params);
+  }
+  console.log('OS:', os);
+};
+
 export const notificationListener = async () => {
   messaging().onNotificationOpenedApp(remoteMessage => {
     console.log(
       'Notification caused app to open from background state',
       remoteMessage,
     );
-    RootNavigation.navigate('NotificationScreen', {
+    RootNavigator.navigate('NotificationScreen', {
       remoteMessage: remoteMessage,
     });
   });

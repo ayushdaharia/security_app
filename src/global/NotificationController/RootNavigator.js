@@ -1,7 +1,21 @@
-import * as React from 'react';
+import {NavigationActions} from '@react-navigation/native';
 
-export const navigationRef = React.createRef();
+let _navigator;
 
-export function navigate(name, params) {
-  navigationRef.current?.navigate(name, params);
+function setTopLevelNavigator(navigatorRef) {
+  _navigator = navigatorRef;
 }
+
+function navigate(routeName, params) {
+  _navigator.navigate(routeName, params);
+}
+
+function goBack() {
+  _navigator.dispatch(NavigationActions.back());
+}
+
+export default {
+  navigate,
+  setTopLevelNavigator,
+  goBack,
+};

@@ -30,7 +30,7 @@ const AddVisitorForm = () => {
     visitorAddress: '',
     visitDate: new Date(),
     room: '',
-    visitTime: '',
+    visitTime: new Date(),
   });
 
   const onPress = async () => {
@@ -76,6 +76,8 @@ const AddVisitorForm = () => {
       saveVisitor(url, payload, navigation, setFormValues);
     }
   };
+
+  console.log({formValues});
 
   return (
     <SafeAreaView
