@@ -27,6 +27,21 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const LoginWithOTP = ({setIsOTPReceived, mobile, OTPRequest}) => {
   const navigation = useNavigation();
   const [otp, setOtp] = useState('');
+  const getFcmToken = async () => {
+    var fcmToken = await AsyncStorage.getItem('fcmToken');
+    console.log(fcmToken, 'the old Token');
+    if (!fcmToken) {
+      try {
+        const fcmToken = await messaging().getToken();
+        if (fcmToken) {
+          console.log(fcmToken, 'the new genrated token');
+          await AsyncStorage.setItem('fcmToken', fcmToken);
+        }
+      } catch (error) {
+        console.log(error, 'error raised in fcm Token');
+      }
+    }
+  };
   const retrieve_FCM_Token = async () => {
     try {
       const value = await AsyncStorage.getItem('fcmToken');
@@ -40,8 +55,9 @@ const LoginWithOTP = ({setIsOTPReceived, mobile, OTPRequest}) => {
   };
 
   //Send Neccessary Details
-  const authencation = async userID => {
+  const authencation = async patientId => {
     const access_token = await AsyncStorage.getItem('ACCESS_TOKEN');
+    getFcmToken();
     const fcm_token = await AsyncStorage.getItem('fcmToken');
     const headers = {
       headers: {
@@ -52,7 +68,7 @@ const LoginWithOTP = ({setIsOTPReceived, mobile, OTPRequest}) => {
     let params = {
       os: 'ANDROID',
       token: fcm_token,
-      userId: userID,
+      patientId: patientId,
     };
 
     console.log({params});
@@ -70,7 +86,6 @@ const LoginWithOTP = ({setIsOTPReceived, mobile, OTPRequest}) => {
     }
   };
 
-  //LogIn with OTP
   const OTPLogIn = async () => {
     if (otp !== '') {
       const params = {
@@ -105,13 +120,14 @@ const LoginWithOTP = ({setIsOTPReceived, mobile, OTPRequest}) => {
 
       storeData('ACCESS_TOKEN', token);
       storeData('USER_ID', dData.userID);
+      storeData('BRANCH_ID', dData.branchId);
       storeData('ROLE', dData.role);
       storeData('ID_NEW', dData.id.toString());
       storeData('MOBILE_NO', dData.sub);
 
       console.log({dDataddddddd: dData.sub});
 
-      authencation(dData.userID);
+      console.log({userID: dData.userID});
 
       getCorpEMPDetails(dData, mobile, navigation);
 
@@ -121,6 +137,7 @@ const LoginWithOTP = ({setIsOTPReceived, mobile, OTPRequest}) => {
 
   useEffect(() => {
     retrieve_FCM_Token();
+    getFcmToken();
   }, []);
 
   const getCorpEMPDetails = async userData => {
@@ -155,6 +172,8 @@ const LoginWithOTP = ({setIsOTPReceived, mobile, OTPRequest}) => {
     storeData('Emp_ID', employee?.data?.empId?.toString());
     storeData('CORP_ID', employee?.data?.corpId?.toString());
     storeData('CORP_LOGO', employee?.data?.corpLogoUrl?.toString());
+
+    authencation(patientId);
 
     console.log({ISACTIVE: userData.isActive});
     if (userData.isActive) {
