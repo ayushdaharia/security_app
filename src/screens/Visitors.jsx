@@ -7,18 +7,18 @@ import VisitorMainSG from '../modules/securityGeneral/VisitorMainSG';
 const Visitors = () => {
   const [userRole, setUserRole] = useState('SECURITY_APPROVER');
 
-  // useEffect(() => {
-  //   const fetchUserRole = async () => {
-  //     try {
-  //       const role = await AsyncStorage.getItem('ROLE');
-  //       setUserRole(role);
-  //     } catch (error) {
-  //       console.error('Error fetching user role:', error);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      try {
+        const role = await AsyncStorage.getItem('ROLE');
+        setUserRole(role);
+      } catch (error) {
+        console.error('Error fetching user role:', error);
+      }
+    };
 
-  //   fetchUserRole();
-  // }, []);
+    fetchUserRole();
+  }, []);
 
   return (
     <>
