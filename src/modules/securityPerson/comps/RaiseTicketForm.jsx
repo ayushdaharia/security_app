@@ -98,26 +98,27 @@ const RaiseTicketForm = () => {
       style={{
         flex: 1,
         backgroundColor: '#FFFFFF',
+        paddingVertical: SIZES.medium,
       }}>
-      <ScrollView
+      {/* <ScrollView
         showsVerticalScrollIndicator={false}
-        style={{marginVertical: 20}}>
-        <CustomTextField
-          heading="Remarks"
-          multiline={true}
-          numberOfLines={7}
-          textFieldheight={135}
-          textAlignVertical="top"
-          width={'100%'}
-          headingColor={'#A7A6A3'}
-          borderColor={'#F6F6F6'}
-          backgroundColor={'#F6F6F6'}
-          placeHolder="Enter Remarks"
-          value={remark}
-          onChangeText={text => setRemark(text)}
-        />
+        style={{marginVertical: 20}}> */}
+      <CustomTextField
+        heading="Remarks"
+        multiline={true}
+        numberOfLines={7}
+        textFieldheight={135}
+        textAlignVertical="top"
+        width={'100%'}
+        headingColor={'#A7A6A3'}
+        borderColor={'#F6F6F6'}
+        backgroundColor={'#F6F6F6'}
+        placeHolder="Enter Remarks"
+        value={remark}
+        onChangeText={text => setRemark(text)}
+      />
 
-        <TouchableOpacity
+      {/* <TouchableOpacity
           onPress={() => {
             captureImage();
           }}
@@ -138,9 +139,9 @@ const RaiseTicketForm = () => {
             source={icons.uploadIcon}
             style={{height: 25, width: 25, marginLeft: 10}}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
-        {files.map((file, index) => (
+      {/* {files.map((file, index) => (
           <View
             key={index}
             style={{
@@ -175,21 +176,19 @@ const RaiseTicketForm = () => {
               />
             </TouchableOpacity>
           </View>
-        ))}
+        ))} */}
 
-        <CustomButton
-          onPress={() =>
-            handleRaiseTicket(setIsLoading, remark, setRemark, files, setFiles)
-          }
-          label={'Save'}
-          style={{
-            width: 200,
-            backgroundColor: '#000000',
-            color: '#FFFFFF',
-            borderColor: '#000000',
-          }}
-        />
-      </ScrollView>
+      <CustomButton
+        onPress={() => {}}
+        label={'Save'}
+        style={{
+          width: 200,
+          backgroundColor: '#000000',
+          color: '#FFFFFF',
+          borderColor: '#000000',
+        }}
+      />
+      {/* </ScrollView> */}
     </SafeAreaView>
   );
 };
