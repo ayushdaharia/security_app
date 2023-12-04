@@ -173,6 +173,7 @@ export const fetchUserDataProfile = async (setProfileData, changeImg) => {
   const userId = await AsyncStorage.getItem('USER_ID');
   const pId = await AsyncStorage.getItem('PATIENT_ID');
   const url = BASE_URL_C + `patient/new/` + pId;
+  console.log({url});
   const data = await getData(url);
   changeImg(data?.data?.imageURL);
   console.log('fetchDisplayName called with userId:', userId);
