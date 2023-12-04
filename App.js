@@ -1,6 +1,7 @@
 import {
   Alert,
   Image,
+  Linking,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -113,29 +114,118 @@ const App = () => {
           }}>
           <MainStackNavigator />
         </ContextPrimary.Provider>
-        {notificationData !== '' ? (
-          <Modal
-            visible={modalVisible}
-            onDismiss={() => setModalVisible(false)}>
+        {/* {notificationData !== '' ? ( */}
+        <Modal visible={modalVisible} onDismiss={() => setModalVisible(false)}>
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: COLORS.gray2,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
             <View
               style={{
-                flex: 1,
-                backgroundColor: COLORS.gray2,
-                justifyContent: 'center',
-                alignItems: 'center',
+                width: '90%',
+                height: 190,
+                backgroundColor: '#FFFFFF',
+                borderRadius: 10,
               }}>
               <View
                 style={{
-                  width: '90%',
-                  height: 150,
-                  backgroundColor: '#FFFFFF',
-                  borderRadius: 10,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: -30,
                 }}>
                 <View
                   style={{
+                    backgroundColor: '#FFFFFF',
+                    padding: 5,
+                    height: 65,
+                    width: 65,
+                    borderRadius: 31,
                     justifyContent: 'center',
                     alignItems: 'center',
-                    marginTop: -30,
+                  }}>
+                  <View
+                    style={{
+                      backgroundColor: '#FF525B',
+                      height: 60,
+                      width: 60,
+                      borderRadius: 30,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <Image
+                      source={icons.notification}
+                      style={{height: 45, width: 45}}
+                      resizeMode="contain"
+                    />
+                  </View>
+                </View>
+              </View>
+              <View
+                style={{
+                  flex: 1,
+                  paddingHorizontal: 20,
+                  paddingVertical: 10,
+                }}>
+                <Text
+                  style={{
+                    color: '#000000',
+                    fontSize: 20,
+                    fontWeight: '700',
+                    textAlign: 'center',
+                  }}>
+                  {notificationTitle}
+                </Text>
+                <View
+                  style={{
+                    width: '100%',
+                    borderWidth: 0.5,
+                    height: 1,
+                    backgroundColor: '#000000',
+                    marginVertical: 10,
+                  }}></View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      Linking.openURL(`tel:${notificationData.visitorMobile}`);
+                    }}>
+                    <Image
+                      source={icons.callIcon}
+                      style={{height: 24, width: 24}}
+                      resizeMode="contain"
+                    />
+                  </TouchableOpacity>
+                  <Text
+                    style={{
+                      color: '#000000',
+                      fontSize: 18,
+                      fontWeight: '700',
+                      textAlign: 'center',
+                      marginHorizontal: 10,
+                    }}>
+                    {notificationData.visitorMobile}
+                  </Text>
+                </View>
+              </View>
+
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                }}>
+                <View
+                  style={{
+                    width: '50%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginBottom: -40,
                   }}>
                   <View
                     style={{
@@ -147,9 +237,63 @@ const App = () => {
                       justifyContent: 'center',
                       alignItems: 'center',
                     }}>
-                    <View
+                    <TouchableOpacity
+                      onPress={() => {
+                        markRejected(notificationData?.visitId);
+                        setModalVisible(false);
+                        setNotificationTitle('');
+                        setNotificationBody('');
+                        setNotificationData('');
+                      }}
                       style={{
-                        backgroundColor: '#FF525B',
+                        backgroundColor: '#FFFFFF',
+                        height: 60,
+                        width: 60,
+                        borderRadius: 30,
+                        borderColor: 'red',
+                        borderWidth: 1,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}>
+                      <Image
+                        source={icons.crossIcon}
+                        style={{height: 45, width: 45}}
+                        resizeMode="contain"
+                        tintColor={'red'}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  <Text style={{color: '#FFFFFF', fontWeight: 700}}>
+                    REJECT
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    width: '50%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginBottom: -40,
+                  }}>
+                  <View
+                    style={{
+                      backgroundColor: '#FFFFFF',
+                      padding: 5,
+                      height: 65,
+                      width: 65,
+                      borderRadius: 31,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        markApproved(notificationData?.visitId);
+                        setModalVisible(false);
+                        setNotificationTitle('');
+                        setNotificationBody('');
+                        setNotificationData('');
+                      }}
+                      style={{
+                        backgroundColor: '#57D08D',
                         height: 60,
                         width: 60,
                         borderRadius: 30,
@@ -157,148 +301,21 @@ const App = () => {
                         alignItems: 'center',
                       }}>
                       <Image
-                        source={icons.notification}
+                        source={icons.rightIcon}
                         style={{height: 45, width: 45}}
                         resizeMode="contain"
                       />
-                    </View>
+                    </TouchableOpacity>
                   </View>
-                </View>
-                <View
-                  style={{
-                    flex: 1,
-                    paddingHorizontal: 20,
-                    paddingVertical: 10,
-                  }}>
-                  <Text
-                    style={{
-                      color: '#000000',
-                      fontSize: 20,
-                      fontWeight: '700',
-                      textAlign: 'center',
-                    }}>
-                    {notificationTitle || 'Notification In Foreground'}
+                  <Text style={{color: '#FFFFFF', fontWeight: 700}}>
+                    APPROVE
                   </Text>
-                  {/* <View
-                  style={{
-                    width: '100%',
-                    borderWidth: 0.5,
-                    height: 1,
-                    backgroundColor: '#000000',
-                    marginVertical: 10,
-                  }}></View>
-                <Text
-                  style={{
-                    color: '#000000',
-                    fontSize: 18,
-                    fontWeight: '700',
-                    textAlign: 'center',
-                  }}>
-                  {notificationBody || 'This is the First Notification.'}
-                </Text>*/}
-                </View>
-
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                  }}>
-                  <View
-                    style={{
-                      width: '50%',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      marginBottom: -40,
-                    }}>
-                    <View
-                      style={{
-                        backgroundColor: '#FFFFFF',
-                        padding: 5,
-                        height: 65,
-                        width: 65,
-                        borderRadius: 31,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}>
-                      <TouchableOpacity
-                        onPress={() => {
-                          markRejected(notificationData?.visitId);
-                          setModalVisible(false);
-                          setNotificationTitle('');
-                          setNotificationBody('');
-                          setNotificationData('');
-                        }}
-                        style={{
-                          backgroundColor: '#FFFFFF',
-                          height: 60,
-                          width: 60,
-                          borderRadius: 30,
-                          borderColor: 'red',
-                          borderWidth: 1,
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}>
-                        <Image
-                          source={icons.crossIcon}
-                          style={{height: 45, width: 45}}
-                          resizeMode="contain"
-                          tintColor={'red'}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                    <Text style={{color: '#FFFFFF', fontWeight: 700}}>
-                      REJECT
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      width: '50%',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      marginBottom: -40,
-                    }}>
-                    <View
-                      style={{
-                        backgroundColor: '#FFFFFF',
-                        padding: 5,
-                        height: 65,
-                        width: 65,
-                        borderRadius: 31,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}>
-                      <TouchableOpacity
-                        onPress={() => {
-                          markApproved(notificationData?.visitId);
-                          setModalVisible(false);
-                          setNotificationTitle('');
-                          setNotificationBody('');
-                          setNotificationData('');
-                        }}
-                        style={{
-                          backgroundColor: '#57D08D',
-                          height: 60,
-                          width: 60,
-                          borderRadius: 30,
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}>
-                        <Image
-                          source={icons.rightIcon}
-                          style={{height: 45, width: 45}}
-                          resizeMode="contain"
-                        />
-                      </TouchableOpacity>
-                    </View>
-                    <Text style={{color: '#FFFFFF', fontWeight: 700}}>
-                      APPROVE
-                    </Text>
-                  </View>
                 </View>
               </View>
             </View>
-          </Modal>
-        ) : null}
+          </View>
+        </Modal>
+        {/* ) : null} */}
       </NavigationContainer>
     </SafeAreaProvider>
   );

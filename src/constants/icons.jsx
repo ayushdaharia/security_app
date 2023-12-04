@@ -28,6 +28,7 @@ import ticketActive from '../assets/icons/ticketActive.png';
 import drawerHome from '../assets/icons/drawerHome.png';
 import rightIcon from '../assets/icons/rightIcon.png';
 import crossIcon from '../assets/icons/crossIcon.png';
+import callIcon from '../assets/icons/callIcon.png';
 
 export default {
   flag,
@@ -60,4 +61,5 @@ export default {
   drawerHome,
   rightIcon,
   crossIcon,
+  callIcon,
 };
