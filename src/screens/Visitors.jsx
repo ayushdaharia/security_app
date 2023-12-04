@@ -5,7 +5,7 @@ import VisitorMainAP from '../modules/approver/VisitorMainAP';
 import VisitorMainSG from '../modules/securityGeneral/VisitorMainSG';
 
 const Visitors = () => {
-  const [userRole, setUserRole] = useState('SECURITY_APPROVER');
+  const [userRole, setUserRole] = useState('');
 
   useEffect(() => {
     const fetchUserRole = async () => {
@@ -19,6 +19,8 @@ const Visitors = () => {
 
     fetchUserRole();
   }, []);
+
+  console.log({userRole});
 
   return (
     <>

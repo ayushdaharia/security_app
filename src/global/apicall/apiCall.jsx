@@ -171,7 +171,6 @@ export const submitHandler = async (
 
 export const fetchUserDataProfile = async (setProfileData, changeImg) => {
   const userId = await AsyncStorage.getItem('USER_ID');
-  // const mobile = await AsyncStorage.getItem('MOBILE_NO');
   const pId = await AsyncStorage.getItem('PATIENT_ID');
   const url = BASE_URL_C + `patient/new/` + pId;
   const data = await getData(url);
@@ -209,7 +208,7 @@ export const saveVisitor = async (url, payload, navigation, setFormValues) => {
 };
 
 export const fetchRoomNameList = async setRoomList => {
-  const branchId = '3fa85f64-5717-4562-b3fc-2c963f66afa6';
+  const branchId = await AsyncStorage.getItem('BRANCH_ID');
   const url = BASE_URL_C + `securityApp/room/search?branchId=${branchId}`;
 
   const data = await getData(url);
@@ -227,8 +226,8 @@ export const fetchRoomNameList = async setRoomList => {
 };
 
 export const fetchVisitorList = async setVisitorList => {
-  const url =
-    BASE_URL_C + 'securityApp/visitor/3fa85f64-5717-4562-b3fc-2c963f66afa6';
+  const branchId = await AsyncStorage.getItem('BRANCH_ID');
+  const url = BASE_URL_C + 'securityApp/visitor/' + branchId;
 
   const data = await getData(url);
   let tempData = [];
@@ -245,7 +244,7 @@ export const fetchVisitorList = async setVisitorList => {
   return setVisitorList(tempData);
 };
 export const fetchHomeCardValues = async setHomeCardValues => {
-  const branchId = '3fa85f64-5717-4562-b3fc-2c963f66afa6';
+  const branchId = await AsyncStorage.getItem('BRANCH_ID');
   const url = BASE_URL_C + 'securityApp/homepage/' + branchId;
 
   const data = await getData(url);
@@ -261,7 +260,7 @@ export const fetchHomeCardValues = async setHomeCardValues => {
 };
 
 export const markApproved = async visitId => {
-  const branchId = '3fa85f64-5717-4562-b3fc-2c963f66afa6';
+  const branchId = await AsyncStorage.getItem('BRANCH_ID');
   const url = BASE_URL_C + 'securityApp/markApproval';
   const Obj = {
     visitId: visitId,
@@ -280,7 +279,7 @@ export const markApproved = async visitId => {
 };
 
 export const markRejected = async visitId => {
-  const branchId = '3fa85f64-5717-4562-b3fc-2c963f66afa6';
+  const branchId = await AsyncStorage.getItem('BRANCH_ID');
   const url = BASE_URL_C + 'securityApp/markApproval';
   const Obj = {
     visitId: visitId,
@@ -298,7 +297,7 @@ export const markRejected = async visitId => {
   }
 };
 export const markExit = async (visitId, exitTime) => {
-  const branchId = '3fa85f64-5717-4562-b3fc-2c963f66afa6';
+  const branchId = await AsyncStorage.getItem('BRANCH_ID');
   const url = BASE_URL_C + 'securityApp/markExit';
   const Obj = {
     visitId: visitId,

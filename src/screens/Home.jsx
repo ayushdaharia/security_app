@@ -21,6 +21,7 @@ import {
 import {Modal, Portal, Text, Button, Provider} from 'react-native-paper';
 import messaging from '@react-native-firebase/messaging';
 import {ContextPrimary} from '../global/context/context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const formatDateToLong = dateString => {
   const options = {
@@ -80,6 +81,23 @@ const Home = () => {
     //   bgC: '#FF8556',
     // },
   ];
+
+  const [userRole, setUserRole] = useState('');
+
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      try {
+        const role = await AsyncStorage.getItem('ROLE');
+        setUserRole(role);
+      } catch (error) {
+        console.error('Error fetching user role:', error);
+      }
+    };
+
+    fetchUserRole();
+  }, []);
+
+  console.log({userRole});
 
   return (
     <SafeAreaView
