@@ -215,7 +215,9 @@ export const fetchRoomNameList = async setRoomList => {
   const data = await getData(url);
   let tempData = [];
   if (data.error) {
-    console.log({'error getting user data': data.error});
+    console.log({'error getting Room Name List': data.error});
+    console.log({URL: url, STATUS: data.error});
+
     setRoomList([]);
   } else {
     tempData = data.data.map((item, index) => ({
@@ -231,11 +233,13 @@ export const fetchVisitorList = async setVisitorList => {
   const url = BASE_URL_C + 'securityApp/visitor/' + branchId;
 
   const data = await getData(url);
+
   let tempData = [];
   if (data.error) {
-    console.log({'error getting user data': data.error});
     setVisitorList([]);
-    console.log({ROOMLIST: data.data});
+    console.log({ROOMLIST: data.error});
+    console.log({URL: url, STATUS: data.error});
+    console.log({'error getting VisitorList': data.error});
   } else {
     tempData = data.data.map((item, index) => ({
       ...item,
@@ -251,7 +255,7 @@ export const fetchHomeCardValues = async setHomeCardValues => {
   const data = await getData(url);
   let tempData = [];
   if (data.error) {
-    console.log({'error getting user data': data.error});
+    console.log({'error getting HomeCard Values': data.error});
     setHomeCardValues([]);
     console.log({ROOMLIST: data.data});
   } else {
@@ -270,7 +274,6 @@ export const markApproved = async visitId => {
   };
   console.log({url: url, obj: Obj});
   const data = await saveData(url, Obj);
-
   if (data.error) {
     alert('An error occured!');
     console.log({Error: data.error});

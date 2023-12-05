@@ -74,7 +74,7 @@ const LoginWithOTP = ({setIsOTPReceived, mobile, OTPRequest}) => {
     console.log({params});
     {
       await axios
-        .post('https://atoz.care/api/securityApp/save/token', params, headers, {
+        .post(BASE_URL_C + 'securityApp/save/token', params, headers, {
           timeout: 3000,
         })
         .then(async response => {

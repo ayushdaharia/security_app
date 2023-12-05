@@ -69,7 +69,7 @@ const AddVisitorForm = () => {
         visitId: 0,
         securityId: pId,
       };
-      const url = 'https://atoz.care/api/securityApp/visitor';
+      const url = BASE_URL_C + 'securityApp/visitor';
 
       console.log(payload);
 

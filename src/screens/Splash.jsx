@@ -35,7 +35,7 @@ const Splash = () => {
     console.log('data received from API:', data.data);
 
     if (data.error) {
-      console.log({'error getting user data': data.error});
+      console.log({'error getting User Data': data.error});
       if (data.data === null) {
         setTimeout(() => {
           navigation.replace('SetupProfile', {
