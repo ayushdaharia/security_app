@@ -281,102 +281,102 @@ const MainBottomNavigator = () => {
       )}
       {userRole === 'SECURITY_APPROVER' && (
         <>
-          <Tab.Screen
-            name="Tickets"
-            component={Tickets}
-            listeners={{
-              tabPress: e => {
-                // Prevent default action
-                e.preventDefault();
-              },
-            }}
-            options={{
-              headerStyle: {backgroundColor: COLORS.lightWhite},
-              headerShadowVisible: false,
-              headerTitleAlign: 'center',
-              tabBarIcon: ({color, focused}) => (
-                <Image
-                  source={focused ? icons.ticketActive : icons.ticket}
-                  style={{width: 25, height: 30}}
-                  tintColor={'gray'}
-                />
-              ),
-              headerLeft: () => (
-                <View
-                  style={{
-                    paddingLeft: SIZES.medium,
-                  }}>
-                  <ScreenHeaderBtn
-                    iconUrl={icons.squareLeftIcon}
-                    dimension="80%"
-                    handlePress={() => {
-                      navigation.goBack();
-                    }}
+          {/* <Tab.Screen
+              name="Tickets"
+              component={Tickets}
+              listeners={{
+                tabPress: e => {
+                  // Prevent default action
+                  e.preventDefault();
+                },
+              }}
+              options={{
+                headerStyle: {backgroundColor: COLORS.lightWhite},
+                headerShadowVisible: false,
+                headerTitleAlign: 'center',
+                tabBarIcon: ({color, focused}) => (
+                  <Image
+                    source={focused ? icons.ticketActive : icons.ticket}
+                    style={{width: 25, height: 30}}
+                    tintColor={'gray'}
                   />
-                </View>
-              ),
-              headerTitle: 'Tickets',
-              title: '',
-            }}
-          />
-          <Tab.Screen
-            name="Add"
-            component={Add}
-            listeners={{
-              tabPress: e => {
-                // Prevent default action
-                e.preventDefault();
-              },
-            }}
-            options={{
-              headerStyle: {backgroundColor: COLORS.lightWhite},
-              headerShadowVisible: false,
-              headerTitleAlign: 'center',
-              tabBarIcon: ({color, focused}) => (
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate('Add');
-                  }}>
+                ),
+                headerLeft: () => (
                   <View
                     style={{
-                      backgroundColor: '#000000',
-                      width: 60,
-                      height: 60,
-                      borderRadius: 30,
-                      marginBottom: keyboardOpen ? -15 : 30,
-                      elevation: 1,
-                      justifyContent: 'center',
-                      alignItems: 'center',
+                      paddingLeft: SIZES.medium,
                     }}>
-                    <Image
-                      source={icons.addIcon}
-                      style={{
-                        height: 25,
-                        width: 25,
+                    <ScreenHeaderBtn
+                      iconUrl={icons.squareLeftIcon}
+                      dimension="80%"
+                      handlePress={() => {
+                        navigation.goBack();
                       }}
-                      tintColor={'#FFFFFF'}
                     />
                   </View>
-                </TouchableOpacity>
-              ),
-              headerLeft: () => (
-                <View
-                  style={{
-                    paddingLeft: SIZES.medium,
-                  }}>
-                  <ScreenHeaderBtn
-                    iconUrl={icons.squareLeftIcon}
-                    dimension="80%"
-                    handlePress={() => {
-                      navigation.goBack();
-                    }}
-                  />
-                </View>
-              ),
-              headerTitle: 'Add',
-              title: '',
-            }}
-          />
+                ),
+                headerTitle: 'Tickets',
+                title: '',
+              }}
+            />
+            <Tab.Screen
+              name="Add"
+              component={Add}
+              listeners={{
+                tabPress: e => {
+                  // Prevent default action
+                  e.preventDefault();
+                },
+              }}
+              options={{
+                headerStyle: {backgroundColor: COLORS.lightWhite},
+                headerShadowVisible: false,
+                headerTitleAlign: 'center',
+                tabBarIcon: ({color, focused}) => (
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate('Add');
+                    }}>
+                    <View
+                      style={{
+                        backgroundColor: '#000000',
+                        width: 60,
+                        height: 60,
+                        borderRadius: 30,
+                        marginBottom: keyboardOpen ? -15 : 30,
+                        elevation: 1,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}>
+                      <Image
+                        source={icons.addIcon}
+                        style={{
+                          height: 25,
+                          width: 25,
+                        }}
+                        tintColor={'#FFFFFF'}
+                      />
+                    </View>
+                  </TouchableOpacity>
+                ),
+                headerLeft: () => (
+                  <View
+                    style={{
+                      paddingLeft: SIZES.medium,
+                    }}>
+                    <ScreenHeaderBtn
+                      iconUrl={icons.squareLeftIcon}
+                      dimension="80%"
+                      handlePress={() => {
+                        navigation.goBack();
+                      }}
+                    />
+                  </View>
+                ),
+                headerTitle: 'Add',
+                title: '',
+              }}
+          /> */}
           <Tab.Screen
             name="Visitors"
             component={Visitors}

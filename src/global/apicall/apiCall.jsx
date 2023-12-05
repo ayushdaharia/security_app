@@ -8,51 +8,6 @@ import {saveData} from '../services/apis/postApi';
 
 const bgColors = ['#F4527C', '#7F6BE2', '#3CCAAC', '#FF8556'];
 
-export const getCorpEMPDetails = async (userData, mobile, navigation) => {
-  const url = BASE_URL_C + `patient/authId/${userData.id}?mobile=${mobile}`;
-  const employee = await getData(url);
-  console.log({EMPLOYEEEDATA: employee?.data});
-  console.log({GETCORPDATA: url});
-  console.log(userData?.id);
-  console.log(mobile);
-
-  if (employee.error) {
-    ToastAndroid.showWithGravityAndOffset(
-      'Something went wrong.',
-      ToastAndroid.SHORT,
-      ToastAndroid.BOTTOM,
-      0,
-      60,
-    );
-  } else {
-    ToastAndroid.showWithGravityAndOffset(
-      'OTP Verified Successfully.',
-      ToastAndroid.SHORT,
-      ToastAndroid.BOTTOM,
-      0,
-      60,
-    );
-  }
-  const patientId = employee?.data?.patientId;
-  storeData('PATIENT_ID', patientId?.toString());
-  storeData('Corp_EmpId', employee?.data?.corpEmpId?.toString());
-  storeData('FAMILY_ID', employee?.data?.familyId?.toString());
-  storeData('Emp_ID', employee?.data?.empId?.toString());
-  storeData('CORP_ID', employee?.data?.corpId?.toString());
-  storeData('CORP_LOGO', employee?.data?.corpLogoUrl?.toString());
-
-  console.log({ISACTIVE: userData.isActive});
-  if (userData.isActive) {
-    navigation.replace('Drawer');
-  } else {
-    navigation.replace('SetupProfile', {
-      mobile: mobile,
-      employee: employee.data,
-    });
-  }
-  console.log({employee_success: employee.data});
-};
-
 export const handleRaiseTicket = async (
   setIsLoading,
   remark,
@@ -173,13 +128,14 @@ export const fetchUserDataProfile = async (setProfileData, changeImg) => {
   const userId = await AsyncStorage.getItem('USER_ID');
   const pId = await AsyncStorage.getItem('PATIENT_ID');
   const url = BASE_URL_C + `patient/new/` + pId;
-  console.log({url});
+
   const data = await getData(url);
   changeImg(data?.data?.imageURL);
   console.log('fetchDisplayName called with userId:', userId);
   console.log('data received from API:', data?.data);
   if (data.error) {
     console.log({'error getting user data': data?.error});
+    console.log({URL: url, STATUS: data.error});
     setProfileData('');
   } else {
     setProfileData(data.data);

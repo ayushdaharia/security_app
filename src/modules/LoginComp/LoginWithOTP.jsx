@@ -21,7 +21,6 @@ import {getData} from '../../global/services/apis/getApi';
 import jwt_decode from 'jwt-decode';
 import axios from 'axios';
 import {storeData} from '../../global/utils/util';
-import {getCorpEMPDetails} from '../../global/apicall/apiCall';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginWithOTP = ({setIsOTPReceived, mobile, OTPRequest}) => {
