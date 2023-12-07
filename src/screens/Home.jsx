@@ -1,7 +1,7 @@
 import {
   SafeAreaView,
   StyleSheet,
-  // Text,
+  RefreshControl,
   View,
   Image,
   ScrollView,
@@ -46,6 +46,7 @@ const Home = () => {
   const [profileData, setProfileData] = useState('');
   const {changeImg, changeName} = useContext(ContextPrimary);
   const isFocused = useIsFocused();
+  const [refreshing, setRefreshing] = useState(false);
   useEffect(() => {
     isFocused && fetchVisitorList(setVisitorsList);
     isFocused && fetchHomeCardValues(setHomeCardValues);
@@ -97,6 +98,16 @@ const Home = () => {
     fetchUserRole();
   }, []);
 
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+      fetchVisitorList(setVisitorsList);
+      fetchHomeCardValues(setHomeCardValues);
+      fetchUserDataProfile(setProfileData, changeImg);
+    }, 2000);
+  }, []);
+
   console.log({userRole});
 
   return (
@@ -115,6 +126,9 @@ const Home = () => {
         </Text>
       </View>
       <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
         showsVerticalScrollIndicator={false}
         style={{flex: 1, marginBottom: 20}}>
         <View

@@ -115,11 +115,59 @@ const SetupProfile = ({route}) => {
       await AsyncStorage.setItem('AVATAR_URL', result.imageURL);
       setImageSrc(result.imageURL);
       changeImg(result.imageURL || null);
+
       Alert.alert('Alert', 'Successfully Uploaded');
       console.log({image_upload: result});
     } catch (error) {
       console.error(error);
       Alert.alert('Alert', 'Failed to Upload');
+    }
+  };
+
+  const getFcmToken = async () => {
+    var fcmToken = await AsyncStorage.getItem('fcmToken');
+    console.log(fcmToken, 'the old Token');
+    if (!fcmToken) {
+      try {
+        const fcmToken = await messaging().getToken();
+        if (fcmToken) {
+          console.log(fcmToken, 'the new genrated token');
+          await AsyncStorage.setItem('fcmToken', fcmToken);
+        }
+      } catch (error) {
+        console.log(error, 'error raised in fcm Token');
+      }
+    }
+  };
+
+  const authencation = async patientId => {
+    const access_token = await AsyncStorage.getItem('ACCESS_TOKEN');
+    getFcmToken();
+    const fcm_token = await AsyncStorage.getItem('fcmToken');
+    const headers = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${access_token}`,
+      },
+    };
+    let params = {
+      os: 'ANDROID',
+      token: fcm_token,
+      patientId: patientId,
+    };
+
+    console.log({params});
+    {
+      await axios
+        .post(BASE_URL_C + 'securityApp/save/token', params, headers, {
+          timeout: 3000,
+        })
+        .then(async response => {
+          console.log('#. saveHandler() : ', response.data);
+        })
+        .catch(error => {
+          console.log('#. saveHandler() error1 : ', error);
+        });
     }
   };
 
@@ -133,8 +181,10 @@ const SetupProfile = ({route}) => {
       userId: userId,
       authId: authId,
       mobile: formValues.mobile,
-      aadhaarNo: formValues.aadhaarNo,
+      // aadhaarNo: formValues.aadhaarNo,
     };
+
+    console.log({payload});
 
     const result = await saveData(url, payload);
 
@@ -144,6 +194,7 @@ const SetupProfile = ({route}) => {
     } else {
       const patientId = result?.data?.patientId;
       console.log({patientId});
+      authencation(patientId);
       storeData('PATIENT_ID', patientId?.toString());
       console.log({formValues_afterSubmit: result.data});
       changeName(result.data.name || null);

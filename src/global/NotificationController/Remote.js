@@ -51,7 +51,7 @@ export const saveFCM = async () => {
     console.error('Error sending Data');
   } else {
     console.log('success');
-    console.log('saveToken', params);
+    console.log('saveToken', result.data);
   }
   console.log('OS:', os);
 };

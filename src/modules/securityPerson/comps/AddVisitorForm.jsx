@@ -97,9 +97,9 @@ const AddVisitorForm = () => {
         visitorName: '',
         visitorMobile: '',
         visitorAddress: '',
-        visitDate: null,
+        visitDate: new Date(),
         room: '',
-        visitTime: null,
+        visitTime: new Date(),
       });
     }
   };

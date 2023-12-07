@@ -18,6 +18,7 @@ import {Modal} from 'react-native-paper';
 import {COLORS, icons} from './src/constants';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {markApproved, markRejected} from './src/global/apicall/apiCall';
+import NotificationController from './src/global/NotificationController/Local';
 
 const App = () => {
   const navigationRef = React.createRef();
@@ -114,6 +115,7 @@ const App = () => {
           }}>
           <MainStackNavigator />
         </ContextPrimary.Provider>
+        <NotificationController />
         {/* {notificationData !== '' ? ( */}
         <Modal visible={modalVisible} onDismiss={() => setModalVisible(false)}>
           <View

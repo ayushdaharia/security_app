@@ -4,6 +4,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  RefreshControl,
   TextInput,
   View,
 } from 'react-native';
@@ -26,6 +27,7 @@ const VisitorMainSP = () => {
   const [visitorList, setVisitorList] = useState([]);
   const [fetch, setFetch] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   const fetchVisitorList = async () => {
     setIsLoading(true);
@@ -75,6 +77,14 @@ const VisitorMainSP = () => {
     ) || [];
   const filterExit =
     filteredSearchInput.filter(obj => obj.approvalStatus === 'EXIT') || [];
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+      fetchVisitorList();
+    }, 2000);
+  }, []);
 
   if (isLoading) {
     return (
@@ -179,6 +189,9 @@ const VisitorMainSP = () => {
         />
       </View>
       <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
         showsVerticalScrollIndicator={false}
         style={{marginBottom: 20}}>
         {selectedTab === 1 &&
