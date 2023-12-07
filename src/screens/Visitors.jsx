@@ -38,29 +38,38 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import Tab1 from './Tab1';
 import Tab2 from './Tab2';
 import Tab3 from './Tab3';
+import {SIZES} from '../constants';
 
 const TopTab = createMaterialTopTabNavigator();
 
 const Visitors = () => {
   return (
-    <View style={{backgroundColor: '#fff', flex: 1}}>
+    <View
+      style={{
+        backgroundColor: '#fff',
+        flex: 1,
+        // justifyContent: 'center',
+        // alignItems: 'center',
+      }}>
       <TopTab.Navigator
+        initialRouteName="Tab1" // Set initial route
         screenOptions={{
-          tabBarActiveTintColor: '#127DDD',
           tabBarInactiveTintColor: '#000000',
-          tabBarPressColor: '#fff',
-          tabBarLabelStyle: {
-            fontSize: 13,
-            fontWeight: '400',
-            textTransform: 'none',
+          tabBarActiveTintColor: '#FFFFFF',
+          tabBarIndicatorStyle: {
+            backgroundColor: '#127DDD',
+            height: '100%',
+            borderRadius: 10,
           },
-          tabBarStyle: {
-            elevation: 0,
-            shadowOpacity: 0,
-            borderBottomWidth: 0,
+          tabBarLabelStyle: {
+            textTransform: 'capitalize',
+          },
+          tabBarIndicatorContainerStyle: {
+            backgroundColor: '#F6F6F6',
+            borderRadius: 10,
           },
         }}>
-        <TopTab.Screen name="A" component={Tab1} />
+        <TopTab.Screen name="Pending" component={Tab1} options={{}} />
         <TopTab.Screen name="B" component={Tab2} />
         <TopTab.Screen name="C" component={Tab3} />
       </TopTab.Navigator>
