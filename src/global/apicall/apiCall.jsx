@@ -218,21 +218,21 @@ export const fetchHomeCardValues = async setHomeCardValues => {
   const role = await AsyncStorage.getItem('ROLE');
   const url =
     BASE_URL_C +
-    'securityApp/visitor/' +
+    'securityApp/homepage/' +
     branchId +
     '?patientId=' +
     pId +
     '&role=' +
     role;
   const data = await getData(url);
-  console.log({url});
+
   let tempData = [];
   if (data.error) {
     console.log({'error getting HomeCard Values': data.error});
     setHomeCardValues([]);
-    console.log({ROOMLIST: data.data});
   } else {
     tempData = data.data;
+    console.log({HOMECARDVALUES: data.data});
   }
   return setHomeCardValues(tempData);
 };
