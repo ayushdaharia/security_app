@@ -64,14 +64,18 @@ const Visitors = () => {
           tabBarLabelStyle: {
             textTransform: 'capitalize',
           },
+          tabBarStyle: {
+            alignSelf: 'center',
+            width: '97%',
+          },
           tabBarIndicatorContainerStyle: {
             backgroundColor: '#F6F6F6',
             borderRadius: 10,
           },
         }}>
         <TopTab.Screen name="Pending" component={Tab1} options={{}} />
-        <TopTab.Screen name="B" component={Tab2} />
-        <TopTab.Screen name="C" component={Tab3} />
+        <TopTab.Screen name="Approved" component={Tab2} />
+        <TopTab.Screen name="Visited" component={Tab3} />
       </TopTab.Navigator>
     </View>
   );
