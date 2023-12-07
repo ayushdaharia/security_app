@@ -78,7 +78,7 @@ const App = () => {
       });
 
     const clearNotifications = () => {
-      setModalVisible(false);
+      // setModalVisible(false);
       setNotificationTitle('');
       setNotificationBody('');
       setNotificationData('');

@@ -33,7 +33,7 @@ public class MainActivity extends ReactActivity {
               .setUsage(AudioAttributes.USAGE_NOTIFICATION)
               .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
               .build();
-      notificationChannel.setSound(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/raw/bell_notification_sound"), att);
+      notificationChannel.setSound(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/raw/patient_waitingbell"), att);
       notificationChannel.enableVibration(true);
       notificationChannel.setVibrationPattern(new long[]{400, 400});
       notificationChannel.setLockscreenVisibility(NotificationCompat.VISIBILITY_PUBLIC);
