@@ -4,9 +4,30 @@ import React, {useEffect, useState} from 'react';
 import {formatTimeInmmhha} from '../../../global/utils/util';
 import {markExit} from '../../../global/apicall/apiCall';
 import {COLORS} from '../../../constants';
+import {BASE_URL_C} from '../../../global/utils/constantUrl';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {saveData} from '../../../global/services/apis/postApi';
 
 const SPCard = ({data, setFetch}) => {
   const [exitTime, setExitTime] = useState(formatTimeInmmhha(new Date()));
+  const markExit = async visitId => {
+    const branchId = await AsyncStorage.getItem('BRANCH_ID');
+    const url = BASE_URL_C + 'securityApp/markExit';
+    const Obj = {
+      visitId: visitId,
+      branchId: branchId,
+      exitTime: exitTime,
+    };
+    console.log({url: url, obj: Obj});
+    const data = await saveData(url, Obj);
+    if (data.error) {
+      alert('An error occured!');
+      console.log({Error: data.error});
+    } else {
+      alert('Saved Successfully!');
+      setFetch(true);
+    }
+  };
 
   return (
     <View style={{flexDirection: 'row', marginVertical: 10}}>
@@ -121,8 +142,7 @@ const SPCard = ({data, setFetch}) => {
           }}>
           <TouchableOpacity
             onPress={() => {
-              markExit(data.visitId, exitTime);
-              setFetch(true);
+              markExit(data.visitId);
             }}
             style={{
               width: '32%',

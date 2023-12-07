@@ -215,7 +215,7 @@ const EditProfile = ({route}) => {
           value={formValues.mobile}
           onChangeText={text => setFormValues({...formValues, mobile: text})}
         />
-        <CustomTextField
+        {/* <CustomTextField
           headingColor={'#A7A6A3'}
           borderColor={'#F6F6F6'}
           backgroundColor={'#F6F6F6'}
@@ -225,7 +225,7 @@ const EditProfile = ({route}) => {
           value={formValues.aadhaarNo}
           maxLength={12}
           onChangeText={text => setFormValues({...formValues, aadhaarNo: text})}
-        />
+        /> */}
         <CustomButton
           onPress={() => onPress()}
           label={'Save'}

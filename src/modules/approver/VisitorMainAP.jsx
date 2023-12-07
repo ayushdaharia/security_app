@@ -8,23 +8,48 @@ import {
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {useIsFocused} from '@react-navigation/native';
-import {fetchVisitorList} from '../../global/apicall/apiCall';
+import {bgColors, fetchVisitorList} from '../../global/apicall/apiCall';
 import {SIZES} from '../../constants';
 import APCardPending from './comp/APCardPending';
 import APCardApproved from './comp/APCardApproved';
 import APCardRejected from './comp/APCardRejected';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {BASE_URL_C} from '../../global/utils/constantUrl';
+import {getData} from '../../global/services/apis/getApi';
+import {ActivityIndicator} from 'react-native-paper';
 
 const VisitorMainAP = () => {
   const [selectedTab, setSelectedTab] = useState(1);
   const [visitorList, setVisitorList] = useState([]);
   const [fetch, setFetch] = useState(false);
-  const isFocused = useIsFocused();
-  useEffect(() => {
-    if (fetch === true || isFocused || selectedTab) {
-      fetchVisitorList(setVisitorList);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const fetchVisitorList = async () => {
+    setIsLoading(true);
+    const branchId = await AsyncStorage.getItem('BRANCH_ID');
+    const pId = await AsyncStorage.getItem('PATIENT_ID');
+    const url =
+      BASE_URL_C + 'securityApp/visitor/' + branchId + '?patientId=' + pId;
+    const data = await getData(url);
+    let tempData = [];
+    if (data.error) {
+      setVisitorList([]);
+      console.log({URL: url, STATUS: data.error});
+      console.log({'error getting VisitorList': data.error});
+      setIsLoading(false);
+    } else {
+      tempData = data.data.map((item, index) => ({
+        ...item,
+        bgC: bgColors[index % bgColors.length],
+      }));
+      setVisitorList(tempData);
       setFetch(false);
+      setIsLoading(false);
     }
-  }, [isFocused, fetch, selectedTab]);
+  };
+  useEffect(() => {
+    fetchVisitorList();
+  }, [fetch]);
 
   const filterPending =
     visitorList.filter(
@@ -47,6 +72,20 @@ const VisitorMainAP = () => {
     visitorList.filter(
       obj => obj.approvalStatus === 'REJECTED' && selectedTab === 3,
     ) || [];
+
+  if (isLoading) {
+    return (
+      <View
+        sx={{
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100%',
+        }}>
+        <ActivityIndicator />
+      </View>
+    );
+  }
 
   return (
     <SafeAreaView

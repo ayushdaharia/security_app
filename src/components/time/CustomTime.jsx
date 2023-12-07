@@ -1,4 +1,97 @@
-import {Image, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+// import {Image, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+// import React, {useState} from 'react';
+
+// import DateTimePicker from '@react-native-community/datetimepicker';
+// import {COLORS, SIZES, icons} from '../../constants';
+
+// const CustomTime = ({
+//   borderColor,
+//   heading,
+//   backgroundColor,
+//   textColor,
+//   formValues,
+//   setFormValues,
+//   propertyName,
+//   borderRadius,
+//   height,
+//   headingColor,
+// }) => {
+//   const [dateValue, setDateValue] = useState(
+//     formValues[propertyName] ? new Date(formValues[propertyName]) : new Date(),
+//   );
+//   const [showTimePicker, setShowTimePicker] = useState(false);
+
+//   const showTimepicker = () => {
+//     setShowTimePicker(true);
+//   };
+
+//   const hideTimePicker = () => {
+//     setShowTimePicker(false);
+//   };
+
+//   const onChange = (event, selectedDate) => {
+//     if (event.type === 'set' || event.nativeEvent.type === 'set') {
+//       setDateValue(selectedDate);
+//       setFormValues({...formValues, [propertyName]: selectedDate});
+//     }
+//     hideTimePicker();
+//   };
+
+//   return (
+//     <View>
+//       <Text style={{color: headingColor ? headingColor : '#000000'}}>
+//         {heading}
+//       </Text>
+//       <View
+//         style={{
+//           height: height ? height : 42,
+//           padding: 10,
+//           backgroundColor: backgroundColor ? backgroundColor : '#FFFFFF',
+//           fontSize: SIZES.small,
+//           marginVertical: 5,
+//           borderColor: borderColor ? borderColor : COLORS.gray,
+//           borderWidth: 1,
+//           borderRadius: borderRadius ? borderRadius : 10,
+//           width: 130,
+//         }}>
+//         <TouchableOpacity
+//           onPress={showTimepicker}
+//           style={{flexDirection: 'row', alignItems: 'center'}}>
+//           <Text style={{color: textColor ? textColor : '#000000'}}>
+//             {dateValue.toLocaleTimeString()}
+//           </Text>
+//           <Image
+//             source={icons.clock}
+//             style={{height: 20, width: 20, marginLeft: 10}}
+//             resizeMode="contain"
+//           />
+//         </TouchableOpacity>
+
+//         {showTimePicker && (
+//           <DateTimePicker
+//             value={dateValue}
+//             mode={'time'}
+//             is24Hour={false}
+//             onChange={onChange}
+//           />
+//         )}
+//       </View>
+//     </View>
+//   );
+// };
+
+// export default CustomTime;
+
+// const styles = StyleSheet.create({});
+
+import {
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
 import React, {useState} from 'react';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -19,25 +112,26 @@ const CustomTime = ({
   const [dateValue, setDateValue] = useState(
     formValues[propertyName] ? new Date(formValues[propertyName]) : new Date(),
   );
-  const [showTimePicker, setShowTimePicker] = useState(false);
+  const [isTimePickerVisible, setIsTimePickerVisible] = useState(false);
 
-  const showTimepicker = () => {
-    setShowTimePicker(true);
+  const showCustomTimePicker = () => {
+    setIsTimePickerVisible(true);
   };
 
-  const hideTimePicker = () => {
-    setShowTimePicker(false);
+  const hideCustomTimePicker = () => {
+    setIsTimePickerVisible(false);
   };
 
-  const onChange = (event, selectedDate) => {
-    if (event.type === 'set') {
+  const onCustomTimeChange = (event, selectedDate) => {
+    if (event.type === 'set' || event.nativeEvent.type === 'set') {
+      setIsTimePickerVisible(Platform.ANDROID === 'ANDROID');
       setDateValue(selectedDate);
       setFormValues({...formValues, [propertyName]: selectedDate});
-      hideTimePicker();
-    } else {
-      hideTimePicker();
     }
+    hideCustomTimePicker();
   };
+
+  console.log({isTimePickerVisible});
 
   return (
     <View>
@@ -57,7 +151,7 @@ const CustomTime = ({
           width: 130,
         }}>
         <TouchableOpacity
-          onPress={showTimepicker}
+          onPress={showCustomTimePicker}
           style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={{color: textColor ? textColor : '#000000'}}>
             {dateValue.toLocaleTimeString()}
@@ -69,12 +163,12 @@ const CustomTime = ({
           />
         </TouchableOpacity>
 
-        {showTimePicker && (
+        {isTimePickerVisible && (
           <DateTimePicker
             value={dateValue}
             mode={'time'}
             is24Hour={false}
-            onChange={onChange}
+            onChange={onCustomTimeChange}
           />
         )}
       </View>

@@ -6,7 +6,7 @@ import {BASE_URL_C} from '../utils/constantUrl';
 import {getData} from '../services/apis/getApi';
 import {saveData} from '../services/apis/postApi';
 
-const bgColors = ['#F4527C', '#7F6BE2', '#3CCAAC', '#FF8556'];
+export const bgColors = ['#F4527C', '#7F6BE2', '#3CCAAC', '#FF8556'];
 
 export const handleRaiseTicket = async (
   setIsLoading,
@@ -186,8 +186,9 @@ export const fetchRoomNameList = async setRoomList => {
 
 export const fetchVisitorList = async setVisitorList => {
   const branchId = await AsyncStorage.getItem('BRANCH_ID');
-  const url = BASE_URL_C + 'securityApp/visitor/' + branchId;
-
+  const pId = await AsyncStorage.getItem('PATIENT_ID');
+  const url =
+    BASE_URL_C + 'securityApp/visitor/' + branchId + '?patientId=' + pId;
   const data = await getData(url);
 
   let tempData = [];

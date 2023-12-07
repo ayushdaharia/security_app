@@ -16,6 +16,7 @@ import {BASE_URL_C} from '../global/utils/constantUrl';
 import {getData} from '../global/services/apis/getApi';
 import {fetchUserDataProfile} from '../global/apicall/apiCall';
 import {ContextPrimary} from '../global/context/context';
+import {ActivityIndicator} from 'react-native-paper';
 
 const CustomProfileTypography = ({title, value}) => {
   return (
@@ -44,12 +45,46 @@ const Profile = () => {
   const navigation = useNavigation();
   const [profileData, setProfileData] = useState('');
   const {changeImg, changeName} = useContext(ContextPrimary);
+  const [isLoading, setIsLoading] = useState(false);
 
+  const fetchUserDataProfile = async () => {
+    setIsLoading(true);
+    const userId = await AsyncStorage.getItem('USER_ID');
+    const pId = await AsyncStorage.getItem('PATIENT_ID');
+    const url = BASE_URL_C + `patient/new/` + pId;
+    const data = await getData(url);
+    console.log('URL', url, 'userId', userId);
+    console.log('data received from API:', data?.data);
+    if (data.error) {
+      console.log({'error getting user data': data?.error});
+      console.log({URL: url, STATUS: data.error});
+      setProfileData('');
+      setIsLoading(false);
+    } else {
+      setIsLoading(false);
+      setProfileData(data.data);
+      changeImg(data?.data?.imageURL);
+    }
+  };
   useEffect(() => {
-    isFocused && fetchUserDataProfile(setProfileData, changeImg);
+    fetchUserDataProfile();
   }, [isFocused]);
 
   console.log({profileData});
+
+  if (isLoading) {
+    return (
+      <View
+        sx={{
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100%',
+        }}>
+        <ActivityIndicator />
+      </View>
+    );
+  }
 
   return (
     <SafeAreaView
@@ -110,10 +145,10 @@ const Profile = () => {
             title={'Mobile'}
             value={`+91 ${profileData.mobile}`}
           />
-          <CustomProfileTypography
+          {/* <CustomProfileTypography
             title={'Aadhaar Number'}
             value={profileData.aadhaarNo || '123456789000'}
-          />
+          /> */}
         </View>
         <CustomButton
           onPress={() => {

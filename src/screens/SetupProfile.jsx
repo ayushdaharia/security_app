@@ -21,6 +21,7 @@ import {COLORS, SIZES, icons} from '../constants';
 import {useNavigation} from '@react-navigation/native';
 import {saveData} from '../global/services/apis/postApi';
 import {ContextPrimary} from '../global/context/context';
+import {storeData} from '../global/utils/util';
 
 const SetupProfile = ({route}) => {
   const {mobile} = route.params;
@@ -141,6 +142,9 @@ const SetupProfile = ({route}) => {
       console.error(result.error);
       Alert.alert('Falied to Submit.');
     } else {
+      const patientId = result?.data?.patientId;
+      console.log({patientId});
+      storeData('PATIENT_ID', patientId?.toString());
       console.log({formValues_afterSubmit: result.data});
       changeName(result.data.name || null);
       Alert.alert('Succefully submited.');

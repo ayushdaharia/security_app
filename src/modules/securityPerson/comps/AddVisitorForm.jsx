@@ -18,12 +18,14 @@ import {BASE_URL_C} from '../../../global/utils/constantUrl';
 import ImagePicker from 'react-native-image-crop-picker';
 import CustomTime from '../../../components/time/CustomTime';
 import SearchRoom from '../../../components/roomAutocomplete/SearchRoom';
-import {saveVisitor} from '../../../global/apicall/apiCall';
 import {useNavigation} from '@react-navigation/native';
 import {formatTimeInmmhha} from '../../../global/utils/util';
+import {saveData} from '../../../global/services/apis/postApi';
+import {ActivityIndicator} from 'react-native-paper';
 
 const AddVisitorForm = () => {
   const navigation = useNavigation();
+  const [isLoading, setIsLoading] = useState(false);
   const [formValues, setFormValues] = useState({
     visitorName: '',
     visitorMobile: '',
@@ -56,17 +58,14 @@ const AddVisitorForm = () => {
       const pId = await AsyncStorage.getItem('PATIENT_ID');
       const branchId = await AsyncStorage.getItem('BRANCH_ID');
       const payload = {
-        patientId: pId,
         visitorName: formValues?.visitorName,
         visitorMobile: formValues?.visitorMobile,
         visitorAddress: formValues?.visitorAddress,
-        roomId: formValues?.room?.id,
-        roomType: formValues?.room?.roomType,
-        branchId: branchId,
         visitDate: formValues?.visitDate?.toISOString().split('T')[0],
         visitTime: formatTimeInmmhha(formValues.visitTime),
-        approvalStatus: 'PENDING_APPROVAL',
-        visitId: 0,
+        branchId: branchId,
+        roomId: formValues?.room?.id,
+        roomType: formValues?.room?.roomType,
         securityId: pId,
       };
       const url = BASE_URL_C + 'securityApp/visitor';
@@ -77,6 +76,47 @@ const AddVisitorForm = () => {
     }
   };
 
+  console.log({VISITTIME: formatTimeInmmhha(formValues.visitTime)});
+
+  const saveVisitor = async (url, payload, navigation, setFormValues) => {
+    setIsLoading(true);
+    const result = await saveData(url, payload);
+    console.log(url);
+    console.log({payload});
+    console.log('result payload', result.data);
+    if (result.error) {
+      console.error(result.error);
+      alert('Falied to Submit.');
+      setIsLoading(false);
+    } else {
+      console.log({formValues_afterSubmit: result.data});
+      alert('Succefully submited.');
+      navigation.goBack();
+      setIsLoading(false);
+      setFormValues({
+        visitorName: '',
+        visitorMobile: '',
+        visitorAddress: '',
+        visitDate: null,
+        room: '',
+        visitTime: null,
+      });
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <View
+        sx={{
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100%',
+        }}>
+        <ActivityIndicator />
+      </View>
+    );
+  }
   console.log({formValues});
 
   return (

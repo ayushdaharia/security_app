@@ -5,7 +5,7 @@ import VisitorMainAP from '../modules/approver/VisitorMainAP';
 import VisitorMainSG from '../modules/securityGeneral/VisitorMainSG';
 
 const Visitors = () => {
-  const [userRole, setUserRole] = useState('');
+  const [userRole, setUserRole] = useState('SECURITY_APPROVER');
 
   useEffect(() => {
     const fetchUserRole = async () => {
@@ -16,7 +16,6 @@ const Visitors = () => {
         console.error('Error fetching user role:', error);
       }
     };
-
     fetchUserRole();
   }, []);
 

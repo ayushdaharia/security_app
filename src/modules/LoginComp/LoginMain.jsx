@@ -17,33 +17,90 @@ import LoginWithOTP from './LoginWithOTP';
 import {BASE_URL, BASE_URL_C} from '../../global/utils/constantUrl';
 import {getData} from '../../global/services/apis/getApi';
 import {getOTPByMobile} from '../../global/services/apis/apiCalls';
+import axios from 'axios';
 
 const LoginMain = () => {
   const navigation = useNavigation();
   const [userName, setUserName] = useState('');
   const [error, setError] = useState(false);
 
+  // const OTPRequest = async () => {
+  //   if (
+  //     userName !== '' &&
+  //     userName.length === 10 &&
+  //     isNaN(userName) === false
+  //   ) {
+  //     const params = {
+  //       mobile: userName,
+  //       portal: 'SECURITY_APP',
+  //     };
+
+  //     const url = BASE_URL + 'send/patient/otp';
+  //     const user = await getOTPByMobile(url, params);
+  //     if (user.error) {
+  //       console.log({'auth data error': 'error'});
+  //       console.log('#. login() error : ', err);
+  //     } else {
+  //       console.log({'auth data success': 'success'});
+  //       console.log('OTP Request', user.data);
+
+  //       setIsOTPReceived(true);
+  //     }
+  //   } else {
+  //   ToastAndroid.showWithGravityAndOffset(
+  //     'Please enter a valid mobile number.',
+  //     ToastAndroid.SHORT,
+  //     ToastAndroid.BOTTOM,
+  //     0,
+  //     60,
+  //   );
+  // }
+  // };
+
   const OTPRequest = async () => {
-    if (
-      userName !== '' &&
-      userName.length === 10 &&
-      isNaN(userName) === false
-    ) {
+    if (userName !== '' && userName.length === 10 && !isNaN(userName)) {
       const params = {
         mobile: userName,
+        portal: 'SECURITY_APP',
       };
 
-      // fetchOTPHandler(, params, userName);
       const url = BASE_URL + 'send/patient/otp';
-      const user = await getOTPByMobile(url, params);
-      if (user.error) {
-        console.log({'auth data error': 'error'});
-        console.log('#. login() error : ', err);
-      } else {
-        console.log({'auth data success': 'success'});
-        console.log('OTP Request', user.data);
 
+      try {
+        const user = await axios({
+          method: 'post',
+          url: url,
+          data: params,
+        });
+        console.log({'auth data success': 'success'});
+        console.log('OTP Request', user);
         setIsOTPReceived(true);
+        ToastAndroid.showWithGravityAndOffset(
+          'OTP Sent Successfully',
+          ToastAndroid.SHORT,
+          ToastAndroid.BOTTOM,
+          0,
+          60,
+        );
+      } catch (error) {
+        console.log({'auth data error': 'error'});
+        console.log('#. login() error : ', error);
+
+        // Log the entire error object to inspect its structure
+        console.log('Error Object:', error);
+
+        // Update the code to handle the error based on its structure
+        if (error.response && error.response.status === 400) {
+          // Handle 400 status code
+          const errorMessage = error.response.data.message;
+          ToastAndroid.showWithGravityAndOffset(
+            `${errorMessage}`,
+            ToastAndroid.SHORT,
+            ToastAndroid.BOTTOM,
+            0,
+            60,
+          );
+        }
       }
     } else {
       ToastAndroid.showWithGravityAndOffset(

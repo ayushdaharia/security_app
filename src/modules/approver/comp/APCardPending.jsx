@@ -8,9 +8,32 @@ import {
   markRejected,
 } from '../../../global/apicall/apiCall';
 import {COLORS} from '../../../constants';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {BASE_URL_C} from '../../../global/utils/constantUrl';
+import {saveData} from '../../../global/services/apis/postApi';
 
 const APCardPending = ({data, setFetch}) => {
   const [exitTime, setExitTime] = useState(formatTimeInmmhha(new Date()));
+
+  const markStatus = async (visitId, appApprovalStatus) => {
+    const branchId = await AsyncStorage.getItem('BRANCH_ID');
+    const url = BASE_URL_C + 'securityApp/markApproval';
+    const Obj = {
+      visitId: visitId,
+      branchId: branchId,
+      appApproval: appApprovalStatus,
+    };
+    console.log({url: url, obj: Obj});
+    const data = await saveData(url, Obj);
+
+    if (data.error) {
+      alert('An error occured!');
+      console.log({Error: data.error});
+    } else {
+      alert('Saved Successfully!');
+      setFetch(true);
+    }
+  };
 
   return (
     <View style={{flexDirection: 'row', marginVertical: 10}}>
@@ -125,8 +148,7 @@ const APCardPending = ({data, setFetch}) => {
           }}>
           <TouchableOpacity
             onPress={() => {
-              markRejected(data.visitId);
-              setFetch(true);
+              markStatus(data.visitId, 'REJECTED');
             }}
             style={{
               width: '32%',
@@ -141,8 +163,7 @@ const APCardPending = ({data, setFetch}) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              markApproved(data.visitId);
-              setFetch(true);
+              markStatus(data.visitId, 'APPROVED');
             }}
             style={{
               width: '32%',

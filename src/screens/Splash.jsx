@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {images} from '../constants';
 import {BASE_URL_C} from '../global/utils/constantUrl';
 import {getData} from '../global/services/apis/getApi';
+import {storeData} from '../global/utils/util';
 
 const Splash = () => {
   const navigation = useNavigation();
@@ -33,7 +34,9 @@ const Splash = () => {
     const data = await getData(url);
     console.log('fetchDisplayName called with userId:', userId);
     console.log('data received from API:', data.data);
-
+    const patientId = data?.data?.patientId;
+    console.log({patientId});
+    storeData('PATIENT_ID', patientId?.toString());
     if (data.error) {
       console.log({'error getting User Data': data.error});
       if (data.data === null) {
