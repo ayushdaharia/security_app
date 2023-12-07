@@ -79,7 +79,7 @@ const Room = () => {
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          backgroundColor: '#F6F6F6',
+          backgroundColor: '#127DDD',
           borderColor: '#F6F6F6',
           marginVertical: 5,
           borderRadius: 10,
@@ -88,12 +88,13 @@ const Room = () => {
         <TextInput
           value={searchQuery}
           onChangeText={text => setSearchQuery(text)}
-          placeholderTextColor={COLORS.gray}
+          placeholderTextColor={COLORS.white}
           style={{
             height: 40,
             padding: 10,
             flex: 1,
-            color: '#000000',
+            fontWeight: '600',
+            color: '#FFFFFF',
           }}
           placeholder="Search Room"
         />

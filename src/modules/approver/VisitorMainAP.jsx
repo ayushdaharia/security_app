@@ -4,12 +4,13 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   View,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {useIsFocused} from '@react-navigation/native';
 import {bgColors, fetchVisitorList} from '../../global/apicall/apiCall';
-import {SIZES} from '../../constants';
+import {COLORS, SIZES} from '../../constants';
 import APCardPending from './comp/APCardPending';
 import APCardApproved from './comp/APCardApproved';
 import APCardRejected from './comp/APCardRejected';
@@ -21,6 +22,7 @@ import {ActivityIndicator} from 'react-native-paper';
 const VisitorMainAP = () => {
   const [selectedTab, setSelectedTab] = useState(1);
   const [visitorList, setVisitorList] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
   const [fetch, setFetch] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -51,8 +53,14 @@ const VisitorMainAP = () => {
     fetchVisitorList();
   }, [fetch]);
 
+  const filteredSearchInput = visitorList.filter(
+    item =>
+      item.visitorName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.visitorMobile.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
+
   const filterPending =
-    visitorList.filter(
+    filteredSearchInput.filter(
       obj =>
         (obj.approvalStatus === 'PENDING_APPROVAL' ||
           obj.approvalStatus === 'MAX_CAPACITY') &&
@@ -60,7 +68,7 @@ const VisitorMainAP = () => {
     ) || [];
 
   const filterApproved =
-    visitorList.filter(
+    filteredSearchInput.filter(
       obj =>
         (obj.approvalStatus === 'APPROVED' ||
           obj.approvalStatus === 'AUTO_APPROVED' ||
@@ -69,7 +77,7 @@ const VisitorMainAP = () => {
     ) || [];
 
   const filterRejected =
-    visitorList.filter(
+    filteredSearchInput.filter(
       obj => obj.approvalStatus === 'REJECTED' && selectedTab === 3,
     ) || [];
 
@@ -149,6 +157,31 @@ const VisitorMainAP = () => {
             Rejected
           </Text>
         </Pressable>
+      </View>
+      <View
+        style={{
+          marginTop: 10,
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: '#F6F6F6',
+          borderColor: '#F6F6F6',
+          marginVertical: 5,
+          borderRadius: 10,
+          marginVertical: 5,
+        }}>
+        <TextInput
+          value={searchQuery}
+          onChangeText={text => setSearchQuery(text)}
+          placeholderTextColor={COLORS.gray}
+          style={{
+            height: 40,
+            padding: 10,
+            flex: 1,
+            fontWeight: '600',
+            color: '#000000',
+          }}
+          placeholder="Search Room"
+        />
       </View>
       <ScrollView
         showsVerticalScrollIndicator={false}

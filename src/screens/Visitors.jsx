@@ -16,6 +16,7 @@ const Visitors = () => {
         console.error('Error fetching user role:', error);
       }
     };
+
     fetchUserRole();
   }, []);
 

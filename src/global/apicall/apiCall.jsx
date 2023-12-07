@@ -207,9 +207,11 @@ export const fetchVisitorList = async setVisitorList => {
 };
 export const fetchHomeCardValues = async setHomeCardValues => {
   const branchId = await AsyncStorage.getItem('BRANCH_ID');
-  const url = BASE_URL_C + 'securityApp/homepage/' + branchId;
-
+  const pId = await AsyncStorage.getItem('PATIENT_ID');
+  const url =
+    BASE_URL_C + 'securityApp/homepage/' + branchId + '?patientId=' + pId;
   const data = await getData(url);
+  console.log({url});
   let tempData = [];
   if (data.error) {
     console.log({'error getting HomeCard Values': data.error});
