@@ -32,8 +32,15 @@ const VisitorMainAP = () => {
     setIsLoading(true);
     const branchId = await AsyncStorage.getItem('BRANCH_ID');
     const pId = await AsyncStorage.getItem('PATIENT_ID');
+    const role = await AsyncStorage.getItem('ROLE');
     const url =
-      BASE_URL_C + 'securityApp/visitor/' + branchId + '?patientId=' + pId;
+      BASE_URL_C +
+      'securityApp/visitor/' +
+      branchId +
+      '?patientId=' +
+      pId +
+      '&role=' +
+      role;
     const data = await getData(url);
     let tempData = [];
     if (data.error) {

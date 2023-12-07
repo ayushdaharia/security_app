@@ -187,8 +187,15 @@ export const fetchRoomNameList = async setRoomList => {
 export const fetchVisitorList = async setVisitorList => {
   const branchId = await AsyncStorage.getItem('BRANCH_ID');
   const pId = await AsyncStorage.getItem('PATIENT_ID');
+  const role = await AsyncStorage.getItem('ROLE');
   const url =
-    BASE_URL_C + 'securityApp/visitor/' + branchId + '?patientId=' + pId;
+    BASE_URL_C +
+    'securityApp/visitor/' +
+    branchId +
+    '?patientId=' +
+    pId +
+    '&role=' +
+    role;
   const data = await getData(url);
 
   let tempData = [];
@@ -208,8 +215,15 @@ export const fetchVisitorList = async setVisitorList => {
 export const fetchHomeCardValues = async setHomeCardValues => {
   const branchId = await AsyncStorage.getItem('BRANCH_ID');
   const pId = await AsyncStorage.getItem('PATIENT_ID');
+  const role = await AsyncStorage.getItem('ROLE');
   const url =
-    BASE_URL_C + 'securityApp/homepage/' + branchId + '?patientId=' + pId;
+    BASE_URL_C +
+    'securityApp/visitor/' +
+    branchId +
+    '?patientId=' +
+    pId +
+    '&role=' +
+    role;
   const data = await getData(url);
   console.log({url});
   let tempData = [];
