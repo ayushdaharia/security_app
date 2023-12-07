@@ -37,22 +37,22 @@ const App = () => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       console.log('Received in forground', remoteMessage);
       setModalVisible(true);
-      setNotificationTitle(remoteMessage.notification.title);
-      setNotificationBody(remoteMessage.notification.body);
-      setNotificationData(remoteMessage.data);
+      setNotificationTitle(remoteMessage?.notification?.title);
+      setNotificationBody(remoteMessage?.notification?.body);
+      setNotificationData(remoteMessage?.data);
     });
 
     messaging().setBackgroundMessageHandler(async remoteMessage => {
       console.log('Recieved in Background', remoteMessage);
       setModalVisible(true);
-      setNotificationTitle(remoteMessage.notification.title);
-      setNotificationBody(remoteMessage.notification.body);
-      setNotificationData(remoteMessage.data);
+      setNotificationTitle(remoteMessage?.notification?.title);
+      setNotificationBody(remoteMessage?.notification?.body);
+      setNotificationData(remoteMessage?.data);
     });
 
     messaging().onNotificationOpenedApp(remoteMessage => {
       console.log('App Open by notification click', remoteMessage);
-      clearNotifications();
+      // clearNotifications();
     });
 
     messaging()
@@ -68,9 +68,9 @@ const App = () => {
             setTimeout(() => {
               if (remoteMessage) {
                 setModalVisible(true);
-                setNotificationTitle(remoteMessage.notification.title);
-                setNotificationBody(remoteMessage.notification.body);
-                setNotificationData(remoteMessage.data);
+                setNotificationTitle(remoteMessage?.notification?.title);
+                setNotificationBody(remoteMessage?.notification?.body);
+                setNotificationData(remoteMessage?.data);
               }
             }, 4000);
           }
@@ -78,7 +78,7 @@ const App = () => {
       });
 
     const clearNotifications = () => {
-      // setModalVisible(false);
+      setModalVisible(false);
       setNotificationTitle('');
       setNotificationBody('');
       setNotificationData('');
