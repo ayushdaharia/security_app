@@ -211,7 +211,9 @@ const RoomCardPatient = ({data, setFetch}) => {
               {`# Occupants: ${data.noOfVisitors || 0}`}
             </Text>
           </View>
-          {data.occupantPhoneNumber === null && data.occupantName === null ? (
+          {(data.occupantPhoneNumber === null && data.occupantName === null) ||
+          data.noOfVisitors === 0 ||
+          data.noOfVisitors === null ? (
             <View style={{backgroundColor: 'red', borderRadius: 10}}>
               <Text
                 style={{
