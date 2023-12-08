@@ -4,9 +4,32 @@ import React, {useEffect, useState} from 'react';
 import {formatTimeInmmhha} from '../../../global/utils/util';
 import {markApproved, markExit} from '../../../global/apicall/apiCall';
 import {COLORS} from '../../../constants';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {BASE_URL_C} from '../../../global/utils/constantUrl';
+import {saveData} from '../../../global/services/apis/postApi';
 
-const APCardApproved = ({data}) => {
-  const [exitTime, setExitTime] = useState(formatTimeInmmhha(new Date()));
+const APCardApproved = ({data, setFetch}) => {
+  const [exitTime, setExitTime] = useState(new Date());
+
+  const markExit = async visitId => {
+    const branchId = await AsyncStorage.getItem('BRANCH_ID');
+    const url = BASE_URL_C + 'securityApp/markExit';
+    const Obj = {
+      visitId: visitId,
+      branchId: branchId,
+      exitTime: exitTime.toISOString(),
+    };
+    console.log(Obj);
+    // console.log({url: url, obj: Obj});
+    const data = await saveData(url, Obj);
+    if (data.error) {
+      alert('An error occured!');
+      console.log({Error: data.error});
+    } else {
+      alert('Saved Successfully!');
+      setFetch(true);
+    }
+  };
 
   return (
     <View style={{flexDirection: 'row', marginVertical: 10}}>
@@ -113,6 +136,31 @@ const APCardApproved = ({data}) => {
             </Text>
           </View>
         </View>
+        {data.approvalStatus === 'EXIT' ? null : (
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginTop: 5,
+            }}>
+            <TouchableOpacity
+              onPress={() => {
+                markExit(data.visitId);
+              }}
+              style={{
+                width: '32%',
+                borderWidth: 0.5,
+                borderRadius: 7.5,
+                padding: 5,
+                backgroundColor: 'red',
+              }}>
+              <Text
+                style={{textAlign: 'center', color: '#FFFFFF', fontSize: 13}}>
+                Mark Exit
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     </View>
   );
