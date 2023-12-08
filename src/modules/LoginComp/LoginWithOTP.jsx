@@ -158,7 +158,7 @@ const LoginWithOTP = ({setIsOTPReceived, mobile, OTPRequest}) => {
       console.log({decodedData: decodedData.sub});
       console.log({userID: decodedData.userID});
 
-      getCorpEMPDetails(decodedData, mobile, navigation);
+      getCorpEMPDetails(decodedData);
 
       console.log({'auth data success======?>>>>>>': decodedData});
     } catch (error) {

@@ -1,8 +1,17 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {COLORS} from '../../constants';
+import {COLORS, icons} from '../../constants';
+import {useNavigation} from '@react-navigation/native';
 
 const RoomCard = ({data}) => {
+  const navigation = useNavigation();
   return (
     <View style={{flexDirection: 'row', marginVertical: 10}}>
       <View
@@ -31,7 +40,7 @@ const RoomCard = ({data}) => {
           shadowRadius: 4.65,
           elevation: 6,
         }}>
-        <View>
+        <View style={{marginBottom: 5}}>
           <Text
             style={{
               color: '#494444',
@@ -74,6 +83,7 @@ const RoomCard = ({data}) => {
             width: '100%',
             marginVertical: 10,
           }}></View>
+
         <View
           style={{
             flexDirection: 'row',
@@ -89,6 +99,18 @@ const RoomCard = ({data}) => {
               {`# Occupants: ${data.noOfVisitors || 0}`}
             </Text>
           </View>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('VisitorListInRoom', {
+                roomId: data?.id,
+              });
+            }}>
+            <Image
+              source={icons.eyeIcon}
+              style={{height: 27, width: 27}}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
         </View>
       </View>
     </View>

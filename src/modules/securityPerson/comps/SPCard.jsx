@@ -10,7 +10,7 @@ import {saveData} from '../../../global/services/apis/postApi';
 
 const SPCard = ({data, setFetch}) => {
   const [exitTime, setExitTime] = useState(new Date());
-  console.log({exitTime});
+
   const markExit = async visitId => {
     const branchId = await AsyncStorage.getItem('BRANCH_ID');
     const url = BASE_URL_C + 'securityApp/markExit';

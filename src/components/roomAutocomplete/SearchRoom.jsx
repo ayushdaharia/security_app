@@ -11,10 +11,11 @@ import {
   TextInput,
   View,
   ScrollView,
+  Image,
 } from 'react-native';
 import {fetchRoomNameList} from '../../global/apicall/apiCall';
 import {useIsFocused} from '@react-navigation/native';
-import {COLORS} from '../../constants';
+import {COLORS, icons} from '../../constants';
 
 const SearchRoom = ({formValues, setFormValues}) => {
   const [roomList, setRoomList] = useState([]);
@@ -48,7 +49,13 @@ const SearchRoom = ({formValues, setFormValues}) => {
   };
 
   const onItemSelected = item => {
-    setInput(item.roomNumber + ' ' + item.occupantName);
+    setInput(
+      item.roomNumber +
+        ' ' +
+        (item.occupantName || '') +
+        ' ' +
+        (item.noOfVisitors || ''),
+    );
     setFormValues({...formValues, room: item});
     setItemSelected(true);
     console.log(item);
@@ -56,12 +63,25 @@ const SearchRoom = ({formValues, setFormValues}) => {
 
   const getItemText = item => {
     let mainText = item.roomNumber;
-    mainText += ' ' + item.occupantName;
+    mainText += ' ' + (item.occupantName || '');
+    const textColor = item.occupantName === null ? '#808080' : '#000000';
 
     return (
       <View style={{flexDirection: 'row', alignItems: 'center', padding: 10}}>
-        <View style={{flexShrink: 1}}>
-          <Text style={{fontWeight: '700', color: '#000000'}}>{mainText}</Text>
+        <View
+          style={{
+            flexShrink: 1,
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          <Text style={{fontWeight: '700', color: textColor}}>{mainText}</Text>
+          <Image
+            source={icons.humanIcon}
+            style={{width: 17, height: 17, marginLeft: 10}}
+          />
+          <Text style={{fontWeight: '700', color: textColor}}>
+            {item.noOfVisitors || '0'}
+          </Text>
         </View>
       </View>
     );
@@ -107,7 +127,10 @@ const SearchRoom = ({formValues, setFormValues}) => {
                 data={filteredData}
                 showsVerticalScrollIndicator={false}
                 renderItem={({item, index}) => (
-                  <TouchableOpacity onPress={() => onItemSelected(item)}>
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() => onItemSelected(item)}
+                    disabled={item.occupantName === null ? true : false}>
                     {getItemText(item)}
                   </TouchableOpacity>
                 )}

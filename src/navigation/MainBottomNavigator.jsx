@@ -61,8 +61,6 @@ const MainBottomNavigator = () => {
     fetchUserRole();
   }, []);
 
-  console.log({userRole});
-
   return (
     <Tab.Navigator
       screenOptions={{
@@ -242,7 +240,7 @@ const MainBottomNavigator = () => {
                 </View>
               ),
 
-              headerTitle: 'Visitors',
+              headerTitle: 'Visitors Dashboard',
               title: '',
             }}
           />

@@ -108,8 +108,6 @@ const Home = () => {
     }, 2000);
   }, []);
 
-  console.log({userRole});
-
   return (
     <SafeAreaView
       style={{

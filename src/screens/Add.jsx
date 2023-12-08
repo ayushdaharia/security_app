@@ -20,8 +20,6 @@ const Add = () => {
     fetchUserRole();
   }, []);
 
-  console.log({userRole});
-
   return (
     <>
       {userRole === 'SECURITY_PERSONNEL' && <AddMainSP />}

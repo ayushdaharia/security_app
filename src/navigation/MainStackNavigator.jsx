@@ -14,6 +14,7 @@ import Splash from '../screens/Splash';
 import Tickets from '../screens/Room';
 import Room from '../screens/Room';
 import Notification from '../screens/Notification';
+import VisitorListInRoom from '../screens/VisitorListInRoom';
 
 const Stack = createStackNavigator();
 
@@ -114,6 +115,31 @@ const MainStackNavigator = () => {
             </View>
           ),
           headerTitle: 'Edit Profile',
+          title: '',
+        }}
+      />
+      <Stack.Screen
+        name="VisitorListInRoom"
+        component={VisitorListInRoom}
+        options={{
+          headerStyle: {backgroundColor: COLORS.lightWhite},
+          headerShadowVisible: false,
+          headerTitleAlign: 'center',
+          headerLeft: () => (
+            <View
+              style={{
+                paddingLeft: SIZES.medium,
+              }}>
+              <ScreenHeaderBtn
+                iconUrl={icons.squareLeftIcon}
+                dimension="80%"
+                handlePress={() => {
+                  navigation.goBack();
+                }}
+              />
+            </View>
+          ),
+          headerTitle: 'Visitors List',
           title: '',
         }}
       />
