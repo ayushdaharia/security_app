@@ -123,6 +123,7 @@ import React from 'react';
 import Patient from './comp/Patient';
 import Office from './comp/Office';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import {SIZES} from '../../constants';
 
 const TopTab = createMaterialTopTabNavigator();
 
@@ -132,6 +133,7 @@ const RoomMain = () => {
       style={{
         backgroundColor: '#fff',
         flex: 1,
+        paddingHorizontal: SIZES.medium,
       }}>
       <TopTab.Navigator
         initialRouteName="Pending"
@@ -149,6 +151,7 @@ const RoomMain = () => {
           tabBarStyle: {
             alignSelf: 'center',
             width: '99%',
+            borderRadius: 10,
           },
           tabBarIndicatorContainerStyle: {
             backgroundColor: '#F6F6F6',

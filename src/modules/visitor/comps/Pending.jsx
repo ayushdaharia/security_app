@@ -75,7 +75,6 @@ const Pending = ({route}) => {
       style={{
         flex: 1,
         backgroundColor: '#FFFFFF',
-        paddingHorizontal: SIZES.medium,
       }}>
       <View
         style={{

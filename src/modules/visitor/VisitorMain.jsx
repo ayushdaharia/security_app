@@ -35,6 +35,7 @@ const VisitorMain = () => {
       style={{
         backgroundColor: '#fff',
         flex: 1,
+        paddingHorizontal: SIZES.medium,
       }}>
       <TopTab.Navigator
         initialRouteName="Pending"
@@ -52,6 +53,7 @@ const VisitorMain = () => {
           tabBarStyle: {
             alignSelf: 'center',
             width: '99%',
+            borderRadius: 10,
           },
           tabBarIndicatorContainerStyle: {
             backgroundColor: '#F6F6F6',
