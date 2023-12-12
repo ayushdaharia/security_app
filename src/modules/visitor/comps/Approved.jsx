@@ -9,70 +9,61 @@ import {
   View,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
+import SPCardPending from './securityPersonnel/SPCardPending';
+import APCardPending from './securityApprover/APCardPending';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {BASE_URL_C} from '../global/utils/constantUrl';
-import {getData} from '../global/services/apis/getApi';
-import {COLORS, SIZES} from '../constants';
+import SPCard from './securityPersonnel/SPCard';
+import APCardApproved from './securityApprover/APCardApproved';
+import {COLORS, SIZES} from '../../../constants';
 import {useIsFocused} from '@react-navigation/native';
-import {bgColors} from '../global/apicall/apiCall';
-import {useRoute} from '@react-navigation/native';
-import SPCardPending from '../modules/visitor/comps/securityPersonnel/SPCardPending';
+import {
+  fetchUserRole,
+  fetchVisitorsList,
+} from '../../../global/apicall/apiCall';
 
-const VisitorListInRoom = () => {
-  const route = useRoute();
-  const roomID = route?.params?.roomId;
-  console.log({roomID});
+const Approved = ({route}) => {
+  //   const {visitorList, userRole, setFetch, onRefresh, refreshing} = route.params;
+  const isFocused = useIsFocused();
   const [visitorList, setVisitorList] = useState([]);
+  const [userRole, setUserRole] = useState('');
   const [fetch, setFetch] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const isFocused = useIsFocused();
 
-  const fetchVisitorList = async () => {
-    setIsLoading(true);
-    const branchId = await AsyncStorage.getItem('BRANCH_ID');
-    const url =
-      BASE_URL_C +
-      'securityApp/room/visitors/' +
-      branchId +
-      '?roomId=' +
-      roomID;
-    console.log({url});
-    const data = await getData(url);
-    let tempData = [];
-    if (data.error) {
-      setVisitorList([]);
-      console.log({URL: url, STATUS: data.error});
-      console.log({'error getting VisitorList': data.error});
-      setIsLoading(false);
-    } else {
-      tempData = data.data.map((item, index) => ({
-        ...item,
-        bgC: bgColors[index % bgColors.length],
-      }));
-      setVisitorList(tempData);
-      setFetch(false);
-      setIsLoading(false);
-    }
-  };
   useEffect(() => {
-    fetchVisitorList();
-  }, [fetch, isFocused]);
+    fetchVisitorsList(setIsLoading, setVisitorList, setFetch);
+    fetchUserRole(setUserRole);
+  }, [fetch]);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+      fetchVisitorsList(setIsLoading, setVisitorList, setFetch);
+    }, 1000);
+  }, []);
+
+  const [searchQuery, setSearchQuery] = useState('');
 
   const filteredSearchInput = visitorList.filter(
     item =>
       item.visitorName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.visitorMobile.toLowerCase().includes(searchQuery.toLowerCase()),
   );
+  const filterApprovedSP =
+    filteredSearchInput.filter(
+      obj =>
+        obj.approvalStatus === 'APPROVED' ||
+        obj.approvalStatus === 'AUTO_APPROVED',
+    ) || [];
 
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-      // fetchRoomNameList();
-    }, 2000);
-  }, []);
+  const filterApprovedAP =
+    filteredSearchInput.filter(
+      obj =>
+        obj.approvalStatus === 'APPROVED' ||
+        obj.approvalStatus === 'AUTO_APPROVED' ||
+        obj.approvalStatus === 'EXIT',
+    ) || [];
 
   if (isLoading) {
     return (
@@ -87,6 +78,7 @@ const VisitorListInRoom = () => {
       </View>
     );
   }
+
   return (
     <SafeAreaView
       style={{
@@ -96,14 +88,12 @@ const VisitorListInRoom = () => {
       }}>
       <View
         style={{
-          marginTop: 10,
           flexDirection: 'row',
           alignItems: 'center',
           backgroundColor: '#F6F6F6',
           borderColor: '#F6F6F6',
-          marginVertical: 5,
           borderRadius: 10,
-          marginVertical: 5,
+          marginVertical: 10,
         }}>
         <TextInput
           value={searchQuery}
@@ -116,23 +106,26 @@ const VisitorListInRoom = () => {
             fontWeight: '600',
             color: '#000000',
           }}
-          placeholder="Search Name"
+          placeholder="Search Room"
         />
       </View>
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-        showsVerticalScrollIndicator={false}
-        style={{marginBottom: 20}}>
-        {filteredSearchInput.map((item, index) => (
-          <SPCardPending data={item} key={index} />
-        ))}
+        }>
+        {userRole === 'SECURITY_PERSONNEL' &&
+          filterApprovedSP?.map((item, index) => (
+            <SPCard key={index} data={item} setFetch={setFetch} />
+          ))}
+        {userRole === 'SECURITY_APPROVER' &&
+          filterApprovedAP?.map((item, index) => (
+            <APCardApproved key={index} data={item} setFetch={setFetch} />
+          ))}
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-export default VisitorListInRoom;
+export default Approved;
 
 const styles = StyleSheet.create({});

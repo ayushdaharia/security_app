@@ -178,156 +178,65 @@ const RaiseTicketForm = () => {
       style={{
         flex: 1,
         backgroundColor: '#FFFFFF',
-        paddingVertical: SIZES.medium,
+        paddingTop: 10,
+        paddingHorizontal: SIZES.medium,
       }}>
-      {/* <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{marginVertical: 20}}> */}
-      <SearchRoom formValues={formValues} setFormValues={setFormValues} />
-      <CustomTextField
-        headingColor={'#A7A6A3'}
-        borderColor={'#F6F6F6'}
-        backgroundColor={'#F6F6F6'}
-        heading="Raise By Name"
-        placeHolder="Enter name"
-        value={formValues.patientName}
-        onChangeText={text => setFormValues({...formValues, patientName: text})}
-      />
-      <CustomTextField
-        headingColor={'#A7A6A3'}
-        borderColor={'#F6F6F6'}
-        backgroundColor={'#F6F6F6'}
-        type="mobile"
-        heading="Raised By Mobile"
-        placeHolder="Enter phone number"
-        value={formValues.patientMobile}
-        onChangeText={text =>
-          setFormValues({...formValues, patientMobile: text})
-        }
-      />
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <SearchRoom formValues={formValues} setFormValues={setFormValues} />
+        <CustomTextField
+          headingColor={'#A7A6A3'}
+          borderColor={'#F6F6F6'}
+          backgroundColor={'#F6F6F6'}
+          heading="Raise By Name"
+          placeHolder="Enter name"
+          value={formValues.patientName}
+          onChangeText={text =>
+            setFormValues({...formValues, patientName: text})
+          }
+        />
+        <CustomTextField
+          headingColor={'#A7A6A3'}
+          borderColor={'#F6F6F6'}
+          backgroundColor={'#F6F6F6'}
+          type="mobile"
+          heading="Raised By Mobile"
+          placeHolder="Enter phone number"
+          value={formValues.patientMobile}
+          onChangeText={text =>
+            setFormValues({...formValues, patientMobile: text})
+          }
+        />
 
-      <CustomTextField
-        heading="Remarks"
-        multiline={true}
-        numberOfLines={7}
-        textFieldheight={135}
-        textAlignVertical="top"
-        width={'100%'}
-        headingColor={'#A7A6A3'}
-        borderColor={'#F6F6F6'}
-        backgroundColor={'#F6F6F6'}
-        placeHolder="Enter Remarks"
-        value={formValues.remark}
-        onChangeText={text => setFormValues({...formValues, remark: text})}
-      />
+        <CustomTextField
+          heading="Remarks"
+          multiline={true}
+          numberOfLines={7}
+          textFieldheight={135}
+          textAlignVertical="top"
+          width={'100%'}
+          headingColor={'#A7A6A3'}
+          borderColor={'#F6F6F6'}
+          backgroundColor={'#F6F6F6'}
+          placeHolder="Enter Remarks"
+          value={formValues.remark}
+          onChangeText={text => setFormValues({...formValues, remark: text})}
+        />
 
-      {/* <TouchableOpacity
+        <CustomButton
           onPress={() => {
-            captureImage();
+            onPress();
           }}
+          label={'Save'}
           style={{
-            marginVertical: 10,
-            flexDirection: 'row',
+            width: 200,
             backgroundColor: '#000000',
-            padding: 10,
-            width: 140,
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: 20,
-          }}>
-          <Text style={{color: '#FFFFFF', fontWeight: '500', fontSize: 17}}>
-            Upload
-          </Text>
-          <Image
-            source={icons.uploadIcon}
-            style={{height: 25, width: 25, marginLeft: 10}}
-          />
-        </TouchableOpacity> */}
-
-      {/* {files.map((file, index) => (
-          <View
-            key={index}
-            style={{
-              marginVertical: 5,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              flexWrap: 'wrap',
-            }}>
-            <Image
-              source={{uri: file.uri}}
-              style={{height: 70, width: 70}}
-              resizeMode="contain"
-            />
-            <View style={{gap: 7}}>
-              <Text style={{color: '#000000'}}>{file.name}</Text>
-              <View
-                style={{
-                  height: 3,
-                  width: 220,
-                  backgroundColor: '#000000',
-                }}></View>
-              <Text style={{color: '#000000'}}>{file.size}</Text>
-            </View>
-
-            <TouchableOpacity onPress={() => removeFile(index)}>
-              <Image
-                source={icons.trashIcon}
-                tintColor={'red'}
-                style={{height: 20, width: 20}}
-                resizeMode="contain"
-              />
-            </TouchableOpacity>
-          </View>
-        ))} */}
-
-      <CustomButton
-        onPress={() => {
-          onPress();
-        }}
-        label={'Save'}
-        style={{
-          width: 200,
-          backgroundColor: '#000000',
-          color: '#FFFFFF',
-          borderColor: '#000000',
-        }}
-      />
-      {/* </ScrollView> */}
+            color: '#FFFFFF',
+            borderColor: '#000000',
+          }}
+        />
+      </ScrollView>
     </SafeAreaView>
   );
 };
 
 export default RaiseTicketForm;
-
-const styles = StyleSheet.create({
-  containerInput: {
-    flexDirection: 'row',
-    paddingHorizontal: 12,
-    borderRadius: 8,
-    backgroundColor: '#FFFFFF',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#ABB2B9',
-  },
-  inputStyle: {
-    width: '100%',
-    flex: 1,
-    fontSize: SIZES.medium,
-    color: '#000000',
-    height: 100,
-  },
-  selectedImageContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 10,
-  },
-  selectedImage: {
-    width: 100,
-    height: 100,
-  },
-  removeText: {
-    color: 'red',
-    textAlign: 'center',
-  },
-});

@@ -1,15 +1,15 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {COLORS} from '../../../constants';
+import {COLORS} from '../../../../constants';
 
-const SPCardVisited = ({data}) => {
+const APCardRejected = ({data}) => {
   return (
     <View style={{flexDirection: 'row', marginVertical: 10}}>
       <View
         style={{
           height: 30,
           width: 5,
-          backgroundColor: data.bgC,
+          backgroundColor: data?.bgC,
           borderRadius: 3,
           marginTop: 5,
         }}></View>
@@ -19,7 +19,7 @@ const SPCardVisited = ({data}) => {
           width: '97%',
           backgroundColor: '#ffffff',
           borderWidth: 1,
-          borderColor: COLORS.lightWhite,
+          borderColor: COLORS?.lightWhite,
           padding: 10,
           borderRadius: 5,
           shadowColor: '#000000',
@@ -38,7 +38,7 @@ const SPCardVisited = ({data}) => {
             fontSize: 20,
             fontWeight: '500',
           }}>
-          {data.visitorName || ''}
+          {data?.visitorName}
         </Text>
         <View
           style={{
@@ -54,7 +54,7 @@ const SPCardVisited = ({data}) => {
               fontSize: 13,
               fontWeight: '400',
             }}>
-            {`Mobile - ${data.visitorMobile}  `}
+            {`Mobile - ${data?.visitorMobile}  `}
           </Text>
           <Text
             style={{
@@ -63,7 +63,7 @@ const SPCardVisited = ({data}) => {
               fontSize: 13,
               fontWeight: '400',
             }}>
-            {`Time - ${data.visitTime}   `}
+            {`Time - ${data?.visitTime}  `}
           </Text>
           <Text
             style={{
@@ -72,7 +72,7 @@ const SPCardVisited = ({data}) => {
               fontSize: 13,
               fontWeight: '400',
             }}>
-            {`Date - ${data.visitDate}`}
+            {`Date - ${data?.visitDate}  `}
           </Text>
         </View>
         <View
@@ -94,7 +94,7 @@ const SPCardVisited = ({data}) => {
                 fontSize: 13,
                 fontWeight: '400',
               }}>
-              Room: {data.roomNumber}
+              Room: {data?.roomNumber}
             </Text>
           </View>
           <View>
@@ -104,7 +104,7 @@ const SPCardVisited = ({data}) => {
                 fontSize: 13,
                 fontWeight: '400',
               }}>
-              {`Status - ${data.approvalStatus?.replace(/_/g, ' ')}`}
+              {`Status - ${data?.approvalStatus?.replace(/_/g, ' ')}`}
             </Text>
           </View>
         </View>
@@ -113,6 +113,6 @@ const SPCardVisited = ({data}) => {
   );
 };
 
-export default SPCardVisited;
+export default APCardRejected;
 
 const styles = StyleSheet.create({});

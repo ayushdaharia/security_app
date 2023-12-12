@@ -7,7 +7,7 @@ const HomeCard = ({data}) => {
   return (
     <View
       style={{
-        backgroundColor: data.bgC,
+        backgroundColor: data?.bgC,
         height: 140,
         width: '46%',
         borderRadius: 5,
@@ -16,7 +16,7 @@ const HomeCard = ({data}) => {
       }}>
       <Pressable
         style={{width: '100%'}}
-        onPress={() => navigation.navigate(data.navigate)}>
+        onPress={() => navigation.navigate(data?.navigate)}>
         <View
           style={{
             height: 40,

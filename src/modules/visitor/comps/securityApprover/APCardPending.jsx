@@ -1,31 +1,50 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  ToastAndroid,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 
-import {formatTimeInmmhha} from '../../../global/utils/util';
-import {markExit} from '../../../global/apicall/apiCall';
-import {COLORS} from '../../../constants';
-import {BASE_URL_C} from '../../../global/utils/constantUrl';
+import {formatTimeInmmhha} from '../../../../global/utils/util';
+import {
+  markApproved,
+  markExit,
+  markRejected,
+} from '../../../../global/apicall/apiCall';
+import {COLORS} from '../../../../constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {saveData} from '../../../global/services/apis/postApi';
+import {BASE_URL_C} from '../../../../global/utils/constantUrl';
+import {saveData} from '../../../../global/services/apis/postApi';
 
-const SPCard = ({data, setFetch}) => {
-  const [exitTime, setExitTime] = useState(new Date());
+const APCardPending = ({data, setFetch}) => {
+  const [exitTime, setExitTime] = useState(formatTimeInmmhha(new Date()));
 
-  const markExit = async visitId => {
+  const markStatus = async (visitId, appApprovalStatus) => {
     const branchId = await AsyncStorage.getItem('BRANCH_ID');
-    const url = BASE_URL_C + 'securityApp/markExit';
+    const url = BASE_URL_C + 'securityApp/markApproval';
     const Obj = {
       visitId: visitId,
       branchId: branchId,
-      exitTime: exitTime,
+      appApproval: appApprovalStatus,
     };
     console.log({url: url, obj: Obj});
     const data = await saveData(url, Obj);
+
     if (data.error) {
-      alert('An error occured!');
+      ToastAndroid.showWithGravity(
+        'An error occured!',
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+      );
       console.log({Error: data.error});
     } else {
-      alert('Saved Successfully!');
+      ToastAndroid.showWithGravity(
+        'Saved Successfully!',
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+      );
       setFetch(true);
     }
   };
@@ -36,7 +55,7 @@ const SPCard = ({data, setFetch}) => {
         style={{
           height: 30,
           width: 5,
-          backgroundColor: data.bgC,
+          backgroundColor: data?.bgC,
           borderRadius: 3,
           marginTop: 5,
         }}></View>
@@ -46,7 +65,7 @@ const SPCard = ({data, setFetch}) => {
           width: '97%',
           backgroundColor: '#ffffff',
           borderWidth: 1,
-          borderColor: COLORS.lightWhite,
+          borderColor: COLORS?.lightWhite,
           padding: 10,
           borderRadius: 5,
           shadowColor: '#000000',
@@ -65,7 +84,7 @@ const SPCard = ({data, setFetch}) => {
             fontSize: 20,
             fontWeight: '500',
           }}>
-          {data.visitorName || ''}
+          {data?.visitorName}
         </Text>
         <View
           style={{
@@ -81,7 +100,7 @@ const SPCard = ({data, setFetch}) => {
               fontSize: 13,
               fontWeight: '400',
             }}>
-            {`Mobile - ${data.visitorMobile}  `}
+            {`Mobile - ${data?.visitorMobile}  `}
           </Text>
           <Text
             style={{
@@ -90,7 +109,7 @@ const SPCard = ({data, setFetch}) => {
               fontSize: 13,
               fontWeight: '400',
             }}>
-            {`Time - ${data.visitTime}   `}
+            {`Time - ${data?.visitTime}  `}
           </Text>
           <Text
             style={{
@@ -99,7 +118,7 @@ const SPCard = ({data, setFetch}) => {
               fontSize: 13,
               fontWeight: '400',
             }}>
-            {`Date - ${data.visitDate}`}
+            {`Date - ${data?.visitDate}  `}
           </Text>
         </View>
         <View
@@ -121,7 +140,7 @@ const SPCard = ({data, setFetch}) => {
                 fontSize: 13,
                 fontWeight: '400',
               }}>
-              Room: {data.roomNumber}
+              Room: {data?.roomNumber}
             </Text>
           </View>
           <View>
@@ -131,7 +150,7 @@ const SPCard = ({data, setFetch}) => {
                 fontSize: 13,
                 fontWeight: '400',
               }}>
-              {`Status - ${data.approvalStatus?.replace(/_/g, ' ')}`}
+              {`Status - ${data?.approvalStatus?.replace(/_/g, ' ')}`}
             </Text>
           </View>
         </View>
@@ -143,17 +162,32 @@ const SPCard = ({data, setFetch}) => {
           }}>
           <TouchableOpacity
             onPress={() => {
-              markExit(data.visitId);
+              markStatus(data?.visitId, 'REJECTED');
             }}
             style={{
               width: '32%',
               borderWidth: 0.5,
               borderRadius: 7.5,
               padding: 5,
-              backgroundColor: 'red',
+              backgroundColor: '#FFFFFF',
+            }}>
+            <Text style={{textAlign: 'center', color: '#000000', fontSize: 13}}>
+              Reject
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              markStatus(data?.visitId, 'APPROVED');
+            }}
+            style={{
+              width: '32%',
+              borderWidth: 0.5,
+              borderRadius: 7.5,
+              padding: 5,
+              backgroundColor: '#000000',
             }}>
             <Text style={{textAlign: 'center', color: '#FFFFFF', fontSize: 13}}>
-              Mark Exit
+              Approve
             </Text>
           </TouchableOpacity>
         </View>
@@ -162,6 +196,6 @@ const SPCard = ({data, setFetch}) => {
   );
 };
 
-export default SPCard;
+export default APCardPending;
 
 const styles = StyleSheet.create({});

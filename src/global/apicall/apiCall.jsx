@@ -290,3 +290,76 @@ export const markExit = async (visitId, exitTime) => {
     alert('Saved Successfully!');
   }
 };
+
+///////////////////////////FETCHVISITORLIST////////////////////////////////
+
+export const fetchVisitorsList = async (
+  setIsLoading,
+  setVisitorList,
+  setFetch,
+) => {
+  setIsLoading(true);
+  const branchId = await AsyncStorage.getItem('BRANCH_ID');
+  const pId = await AsyncStorage.getItem('PATIENT_ID');
+  const role = await AsyncStorage.getItem('ROLE');
+  const url =
+    BASE_URL_C +
+    'securityApp/visitor/' +
+    branchId +
+    '?patientId=' +
+    pId +
+    '&role=' +
+    role;
+  console.log({url});
+  const data = await getData(url);
+  let tempData = [];
+  if (data.error) {
+    setVisitorList([]);
+    console.log({URL: url, STATUS: data.error});
+    console.log({'error getting VisitorList': data.error});
+    setIsLoading(false);
+  } else {
+    tempData = data.data.map((item, index) => ({
+      ...item,
+      bgC: bgColors[index % bgColors.length],
+    }));
+    setVisitorList(tempData);
+    setFetch(false);
+    setIsLoading(false);
+  }
+};
+
+/////////////////////////FETCH_USER_ROLE//////////////////////////
+
+export const fetchUserRole = async setUserRole => {
+  try {
+    const role = await AsyncStorage.getItem('ROLE');
+    setUserRole(role);
+  } catch (error) {
+    console.error('Error fetching user role:', error);
+  }
+};
+
+///////////////////////////FETCH_ROOM_LIST/////////////////////////////////////////
+
+export const fetchRoomNames = async (setIsLoading, setRoomList, setFetch) => {
+  setIsLoading(true);
+  const branchId = await AsyncStorage.getItem('BRANCH_ID');
+  const url = BASE_URL_C + `securityApp/room/search?branchId=${branchId}`;
+  const data = await getData(url);
+  let tempData = [];
+  if (data.error) {
+    console.log({'error getting Room Name List': data.error});
+    console.log({URL: url, STATUS: data.error});
+    setRoomList([]);
+    setIsLoading(false);
+  } else {
+    tempData = data.data.map((item, index) => ({
+      ...item,
+      bgC: bgColors[index % bgColors.length],
+    }));
+    setRoomList(tempData);
+    setIsLoading(false);
+    setFetch(false);
+  }
+};

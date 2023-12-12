@@ -121,12 +121,6 @@ const MainBottomNavigator = () => {
           <Tab.Screen
             name="Tickets"
             component={Tickets}
-            // listeners={{
-            //   tabPress: e => {
-            //     // Prevent default action
-            //     e.preventDefault();
-            //   },
-            // }}
             options={{
               headerStyle: {backgroundColor: COLORS.lightWhite},
               headerShadowVisible: false,

@@ -1,35 +1,12 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 
-import {formatTimeInmmhha} from '../../../global/utils/util';
-import {markApproved, markExit} from '../../../global/apicall/apiCall';
-import {COLORS} from '../../../constants';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {BASE_URL_C} from '../../../global/utils/constantUrl';
-import {saveData} from '../../../global/services/apis/postApi';
+import {formatTimeInmmhha} from '../../../../global/utils/util';
+import {markExit} from '../../../../global/apicall/apiCall';
+import {COLORS} from '../../../../constants';
 
-const APCardApproved = ({data, setFetch}) => {
-  const [exitTime, setExitTime] = useState(new Date());
-
-  const markExit = async visitId => {
-    const branchId = await AsyncStorage.getItem('BRANCH_ID');
-    const url = BASE_URL_C + 'securityApp/markExit';
-    const Obj = {
-      visitId: visitId,
-      branchId: branchId,
-      exitTime: exitTime.toISOString(),
-    };
-    console.log(Obj);
-    // console.log({url: url, obj: Obj});
-    const data = await saveData(url, Obj);
-    if (data.error) {
-      alert('An error occured!');
-      console.log({Error: data.error});
-    } else {
-      alert('Saved Successfully!');
-      setFetch(true);
-    }
-  };
+const SPCardPending = ({data}) => {
+  const [exitTime, setExitTime] = useState(formatTimeInmmhha(new Date()));
 
   return (
     <View style={{flexDirection: 'row', marginVertical: 10}}>
@@ -37,7 +14,7 @@ const APCardApproved = ({data, setFetch}) => {
         style={{
           height: 30,
           width: 5,
-          backgroundColor: data.bgC,
+          backgroundColor: data?.bgC,
           borderRadius: 3,
           marginTop: 5,
         }}></View>
@@ -47,7 +24,7 @@ const APCardApproved = ({data, setFetch}) => {
           width: '97%',
           backgroundColor: '#ffffff',
           borderWidth: 1,
-          borderColor: COLORS.lightWhite,
+          borderColor: COLORS?.lightWhite,
           padding: 10,
           borderRadius: 5,
           shadowColor: '#000000',
@@ -66,7 +43,7 @@ const APCardApproved = ({data, setFetch}) => {
             fontSize: 20,
             fontWeight: '500',
           }}>
-          {data.visitorName}
+          {data?.visitorName || ''}
         </Text>
         <View
           style={{
@@ -82,7 +59,7 @@ const APCardApproved = ({data, setFetch}) => {
               fontSize: 13,
               fontWeight: '400',
             }}>
-            {`Mobile - ${data.visitorMobile}  `}
+            {`Mobile - ${data?.visitorMobile}  `}
           </Text>
           <Text
             style={{
@@ -91,7 +68,7 @@ const APCardApproved = ({data, setFetch}) => {
               fontSize: 13,
               fontWeight: '400',
             }}>
-            {`Time - ${data.visitTime}  `}
+            {`Time - ${data?.visitTime}   `}
           </Text>
           <Text
             style={{
@@ -100,7 +77,7 @@ const APCardApproved = ({data, setFetch}) => {
               fontSize: 13,
               fontWeight: '400',
             }}>
-            {`Date - ${data.visitDate}  `}
+            {`Date - ${data?.visitDate}`}
           </Text>
         </View>
         <View
@@ -122,7 +99,7 @@ const APCardApproved = ({data, setFetch}) => {
                 fontSize: 13,
                 fontWeight: '400',
               }}>
-              Room: {data.roomNumber}
+              Room: {data?.roomNumber}
             </Text>
           </View>
           <View>
@@ -132,40 +109,15 @@ const APCardApproved = ({data, setFetch}) => {
                 fontSize: 13,
                 fontWeight: '400',
               }}>
-              {`Status - ${data.approvalStatus?.replace(/_/g, ' ')}`}
+              {`Status - ${data?.approvalStatus?.replace(/_/g, ' ')}`}
             </Text>
           </View>
         </View>
-        {data.approvalStatus === 'EXIT' ? null : (
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginTop: 5,
-            }}>
-            <TouchableOpacity
-              onPress={() => {
-                markExit(data.visitId);
-              }}
-              style={{
-                width: '32%',
-                borderWidth: 0.5,
-                borderRadius: 7.5,
-                padding: 5,
-                backgroundColor: 'red',
-              }}>
-              <Text
-                style={{textAlign: 'center', color: '#FFFFFF', fontSize: 13}}>
-                Mark Exit
-              </Text>
-            </TouchableOpacity>
-          </View>
-        )}
       </View>
     </View>
   );
 };
 
-export default APCardApproved;
+export default SPCardPending;
 
 const styles = StyleSheet.create({});
