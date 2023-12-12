@@ -125,7 +125,7 @@ const AddVisitorForm = () => {
         flex: 1,
         backgroundColor: '#FFFFFF',
         paddingTop: 10,
-        paddingHorizontal: SIZES.medium,
+        // paddingHorizontal: SIZES.medium,
       }}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <SearchRoom formValues={formValues} setFormValues={setFormValues} />

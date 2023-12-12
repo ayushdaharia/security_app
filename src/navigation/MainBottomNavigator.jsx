@@ -161,31 +161,26 @@ const MainBottomNavigator = () => {
               headerShadowVisible: false,
               headerTitleAlign: 'center',
               tabBarIcon: ({color, focused}) => (
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate('Add');
+                <View
+                  style={{
+                    backgroundColor: '#000000',
+                    width: 60,
+                    height: 60,
+                    borderRadius: 30,
+                    marginBottom: keyboardOpen ? -15 : 30,
+                    elevation: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
                   }}>
-                  <View
+                  <Image
+                    source={icons.addIcon}
                     style={{
-                      backgroundColor: '#000000',
-                      width: 60,
-                      height: 60,
-                      borderRadius: 30,
-                      marginBottom: keyboardOpen ? -15 : 30,
-                      elevation: 1,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    <Image
-                      source={icons.addIcon}
-                      style={{
-                        height: 25,
-                        width: 25,
-                      }}
-                      tintColor={'#FFFFFF'}
-                    />
-                  </View>
-                </TouchableOpacity>
+                      height: 25,
+                      width: 25,
+                    }}
+                    tintColor={'#FFFFFF'}
+                  />
+                </View>
               ),
               headerLeft: () => (
                 <View

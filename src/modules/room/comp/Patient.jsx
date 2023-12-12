@@ -62,7 +62,7 @@ const Patient = () => {
       style={{
         flex: 1,
         backgroundColor: '#FFFFFF',
-        paddingHorizontal: SIZES.medium,
+        // paddingHorizontal: SIZES.medium,
       }}>
       <ScrollView
         refreshControl={

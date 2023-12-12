@@ -4,6 +4,7 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import RaiseTicketForm from './comp/RaiseTicketForm';
 import AddVisitorForm from './comp/AddVisitorForm';
+import {SIZES} from '../../constants';
 
 const TopTab = createMaterialTopTabNavigator();
 
@@ -13,6 +14,7 @@ const AddMain = () => {
       style={{
         backgroundColor: '#fff',
         flex: 1,
+        paddingHorizontal: SIZES.medium,
       }}>
       <TopTab.Navigator
         initialRouteName="Raise Ticket"
@@ -30,6 +32,7 @@ const AddMain = () => {
           tabBarStyle: {
             alignSelf: 'center',
             width: '99%',
+            borderRadius: 10,
           },
           tabBarIndicatorContainerStyle: {
             backgroundColor: '#F6F6F6',
