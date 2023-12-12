@@ -5,7 +5,7 @@
 // import VisitorMainSG from '../modules/securityGeneral/VisitorMainSG';
 
 // const Visitors = () => {
-//   const [userRole, setUserRole] = useState('SECURITY_APPROVER');
+//   const [userRole, setUserRole] = useState('');
 
 //   useEffect(() => {
 //     const fetchUserRole = async () => {
@@ -20,8 +20,6 @@
 //     fetchUserRole();
 //   }, []);
 
-//   console.log({userRole});
-
 //   return (
 //     <>
 //       {userRole === 'SECURITY_PERSONNEL' && <VisitorMainSP />}
@@ -34,51 +32,10 @@
 // export default Visitors;
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import Tab1 from './Tab1';
-import Tab2 from './Tab2';
-import Tab3 from './Tab3';
-import {SIZES} from '../constants';
-
-const TopTab = createMaterialTopTabNavigator();
+import VisitorMain from '../modules/visitor/VisitorMain';
 
 const Visitors = () => {
-  return (
-    <View
-      style={{
-        backgroundColor: '#fff',
-        flex: 1,
-        // justifyContent: 'center',
-        // alignItems: 'center',
-      }}>
-      <TopTab.Navigator
-        initialRouteName="Tab1" // Set initial route
-        screenOptions={{
-          tabBarInactiveTintColor: '#000000',
-          tabBarActiveTintColor: '#FFFFFF',
-          tabBarIndicatorStyle: {
-            backgroundColor: '#127DDD',
-            height: '100%',
-            borderRadius: 10,
-          },
-          tabBarLabelStyle: {
-            textTransform: 'capitalize',
-          },
-          tabBarStyle: {
-            alignSelf: 'center',
-            width: '97%',
-          },
-          tabBarIndicatorContainerStyle: {
-            backgroundColor: '#F6F6F6',
-            borderRadius: 10,
-          },
-        }}>
-        <TopTab.Screen name="Pending" component={Tab1} options={{}} />
-        <TopTab.Screen name="Approved" component={Tab2} />
-        <TopTab.Screen name="Visited" component={Tab3} />
-      </TopTab.Navigator>
-    </View>
-  );
+  return <VisitorMain />;
 };
 
 export default Visitors;

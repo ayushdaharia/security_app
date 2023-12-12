@@ -22,6 +22,7 @@ import jwt_decode from 'jwt-decode';
 import axios from 'axios';
 import {storeData} from '../../global/utils/util';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import messaging from '@react-native-firebase/messaging';
 
 const LoginWithOTP = ({setIsOTPReceived, mobile, OTPRequest}) => {
   const navigation = useNavigation();
@@ -41,6 +42,7 @@ const LoginWithOTP = ({setIsOTPReceived, mobile, OTPRequest}) => {
       }
     }
   };
+
   const retrieve_FCM_Token = async () => {
     try {
       const value = await AsyncStorage.getItem('fcmToken');
@@ -100,37 +102,80 @@ const LoginWithOTP = ({setIsOTPReceived, mobile, OTPRequest}) => {
     }
   };
 
+  // const fetchLoginDetails = useCallback(async (url, data) => {
+  //   const user = await getUserToken(url, data);
+  //   if (user && user.error) {
+  //     ToastAndroid.showWithGravityAndOffset({
+  //       position: 'Top',
+  //       topOffset: 10,
+  //       autoHide: true,
+  //       visibilityTime: 3000,
+  //       type: 'error',
+  //       text1: 'OTP Invalid.',
+  //     });
+  //     console.log({'auth data error': user.error});
+  //   } else {
+  //     const data = user.data;
+  //     const token = await data.token;
+  //     const dData = await jwt_decode(token);
+
+  //     storeData('ACCESS_TOKEN', token);
+  //     storeData('USER_ID', dData.userID);
+  //     storeData('BRANCH_ID', dData.branchId);
+  //     storeData('ROLE', dData.role);
+  //     storeData('ID_NEW', dData.id.toString());
+  //     storeData('MOBILE_NO', dData.sub);
+
+  //     console.log({dDataddddddd: dData.sub});
+
+  //     console.log({userID: dData.userID});
+
+  //     getCorpEMPDetails(dData, mobile, navigation);
+
+  //     console.log({'auth data success======?>>>>>>': dData});
+  //   }
+  // }, []);
+
   const fetchLoginDetails = useCallback(async (url, data) => {
-    const user = await getUserToken(url, data);
-    if (user && user.error) {
-      ToastAndroid.showWithGravityAndOffset({
-        position: 'Top',
-        topOffset: 10,
-        autoHide: true,
-        visibilityTime: 3000,
-        type: 'error',
-        text1: 'OTP Invalid.',
+    try {
+      const user = await axios({
+        method: 'post',
+        url: url,
+        data: data,
       });
-      console.log({'auth data error': user.error});
-    } else {
-      const data = user.data;
-      const token = await data.token;
-      const dData = await jwt_decode(token);
+
+      const responseData = user.data;
+      const token = responseData.token;
+      const decodedData = jwt_decode(token);
 
       storeData('ACCESS_TOKEN', token);
-      storeData('USER_ID', dData.userID);
-      storeData('BRANCH_ID', dData.branchId);
-      storeData('ROLE', dData.role);
-      storeData('ID_NEW', dData.id.toString());
-      storeData('MOBILE_NO', dData.sub);
+      storeData('USER_ID', decodedData.userID);
+      storeData('BRANCH_ID', decodedData.branchId);
+      storeData('ROLE', decodedData.role);
+      storeData('ID_NEW', decodedData.id.toString());
+      storeData('MOBILE_NO', decodedData.sub);
 
-      console.log({dDataddddddd: dData.sub});
+      console.log({decodedData: decodedData.sub});
+      console.log({userID: decodedData.userID});
 
-      console.log({userID: dData.userID});
+      getCorpEMPDetails(decodedData);
 
-      getCorpEMPDetails(dData, mobile, navigation);
+      console.log({'auth data success======?>>>>>>': decodedData});
+    } catch (error) {
+      // Handle errors here
+      if (error.response && error.response.status === 500) {
+        // Server error (500), show a toast for wrong OTP
+        ToastAndroid.show('Wrong OTP. Please try again.', ToastAndroid.LONG);
+      } else {
+        // Other errors, you can customize this message based on the error
+        ToastAndroid.show(
+          'An error occurred. Please try again.',
+          ToastAndroid.LONG,
+        );
+      }
 
-      console.log({'auth data success======?>>>>>>': dData});
+      // You might want to log the error for further investigation
+      console.error('Login failed:', error);
     }
   }, []);
 

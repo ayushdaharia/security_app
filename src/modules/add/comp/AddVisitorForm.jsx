@@ -91,15 +91,15 @@ const AddVisitorForm = () => {
     } else {
       console.log({formValues_afterSubmit: result.data});
       alert('Succefully submited.');
-      navigation.goBack();
+      // navigation.goBack();
       setIsLoading(false);
       setFormValues({
         visitorName: '',
         visitorMobile: '',
         visitorAddress: '',
-        visitDate: null,
+        visitDate: new Date(),
         room: '',
-        visitTime: null,
+        visitTime: new Date(),
       });
     }
   };
@@ -124,58 +124,10 @@ const AddVisitorForm = () => {
       style={{
         flex: 1,
         backgroundColor: '#FFFFFF',
+        paddingTop: 10,
+        paddingHorizontal: SIZES.medium,
       }}>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{marginVertical: 20}}>
-        {/* <View
-          style={{
-            padding: SIZES.medium,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <View
-            style={{
-              backgroundColor: '#FFFFFF',
-              height: 90,
-              width: 90,
-              borderWidth: 2,
-              borderColor: '#000000',
-              borderRadius: 45,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            {imageSrc === '' || imageSrc === null ? (
-              <Image
-                source={icons.profile}
-                style={{
-                  height: 40,
-                  width: 40,
-                }}
-                resizeMode="contain"
-              />
-            ) : (
-              <Image
-                source={{uri: imageSrc}}
-                style={{
-                  height: 80,
-                  width: 80,
-                  borderRadius: 40,
-                  margin: 5,
-                }}
-                resizeMode="contain"
-              />
-            )}
-          </View>
-          <View
-            style={{
-              marginTop: 10,
-            }}>
-            <TouchableOpacity onPress={() => captureImage()}>
-              <Text style={{color: '#A7A6A3'}}>Change Photo</Text>
-            </TouchableOpacity>
-          </View>
-        </View> */}
+      <ScrollView showsVerticalScrollIndicator={false}>
         <SearchRoom formValues={formValues} setFormValues={setFormValues} />
 
         <CustomTextField
@@ -227,7 +179,7 @@ const AddVisitorForm = () => {
             borderColor={'#F6F6F6'}
             backgroundColor={'#F6F6F6'}
             textColor={'#000000'}
-            formValues={formValues} // Use formValues, not date
+            formValues={formValues}
             setFormValues={setFormValues}
             propertyName="visitTime"
           />

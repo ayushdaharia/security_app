@@ -1,5 +1,16 @@
 package com.security_app;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.ContentResolver;
+import android.content.Intent;
+import android.content.IntentSender;
+import android.media.AudioAttributes;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import androidx.core.app.NotificationCompat;
+
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
@@ -11,6 +22,37 @@ public class MainActivity extends ReactActivity {
    * Returns the name of the main component registered from JavaScript. This is used to schedule
    * rendering of the component.
    */
+ @Override
+protected void onCreate(Bundle savedInstanceState) {
+  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+    NotificationChannel notificationChannel = new NotificationChannel(
+      "Patient_call",
+      "Notification",
+      NotificationManager.IMPORTANCE_HIGH
+    );
+    notificationChannel.setShowBadge(true);
+    notificationChannel.setDescription("");
+    
+    AudioAttributes audioAttributes = new AudioAttributes.Builder()
+        .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+        .setContentType(AudioAttributes.CONTENT_TYPE_UNKNOWN)  // Change to CONTENT_TYPE_UNKNOWN
+        .build();
+    
+     notificationChannel.setSound(
+        Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/" + R.raw.patient_waitingbell),
+          audioAttributes
+        );
+    notificationChannel.enableVibration(true);
+    notificationChannel.setVibrationPattern(new long[]{400, 400});
+    notificationChannel.setLockscreenVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+    NotificationManager manager = getSystemService(NotificationManager.class);
+    manager.createNotificationChannel(notificationChannel);
+  }
+  super.onCreate(savedInstanceState);
+}
+
+
+
   @Override
   protected String getMainComponentName() {
     return "security_app";

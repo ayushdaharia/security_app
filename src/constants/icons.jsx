@@ -29,6 +29,9 @@ import drawerHome from '../assets/icons/drawerHome.png';
 import rightIcon from '../assets/icons/rightIcon.png';
 import crossIcon from '../assets/icons/crossIcon.png';
 import callIcon from '../assets/icons/callIcon.png';
+import editIcon from '../assets/icons/editIcon.png';
+import eyeIcon from '../assets/icons/eyeIcon.png';
+import humanIcon from '../assets/icons/humanIcon.png';
 
 export default {
   flag,
@@ -62,4 +65,7 @@ export default {
   rightIcon,
   crossIcon,
   callIcon,
+  editIcon,
+  eyeIcon,
+  humanIcon,
 };

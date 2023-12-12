@@ -18,6 +18,7 @@ import {Modal} from 'react-native-paper';
 import {COLORS, icons} from './src/constants';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {markApproved, markRejected} from './src/global/apicall/apiCall';
+import NotificationController from './src/global/NotificationController/Local';
 
 const App = () => {
   const navigationRef = React.createRef();
@@ -36,22 +37,22 @@ const App = () => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       console.log('Received in forground', remoteMessage);
       setModalVisible(true);
-      setNotificationTitle(remoteMessage.notification.title);
-      setNotificationBody(remoteMessage.notification.body);
-      setNotificationData(remoteMessage.data);
+      setNotificationTitle(remoteMessage?.notification?.title);
+      setNotificationBody(remoteMessage?.notification?.body);
+      setNotificationData(remoteMessage?.data);
     });
 
     messaging().setBackgroundMessageHandler(async remoteMessage => {
       console.log('Recieved in Background', remoteMessage);
       setModalVisible(true);
-      setNotificationTitle(remoteMessage.notification.title);
-      setNotificationBody(remoteMessage.notification.body);
-      setNotificationData(remoteMessage.data);
+      setNotificationTitle(remoteMessage?.notification?.title);
+      setNotificationBody(remoteMessage?.notification?.body);
+      setNotificationData(remoteMessage?.data);
     });
 
     messaging().onNotificationOpenedApp(remoteMessage => {
       console.log('App Open by notification click', remoteMessage);
-      clearNotifications();
+      // clearNotifications();
     });
 
     messaging()
@@ -67,9 +68,9 @@ const App = () => {
             setTimeout(() => {
               if (remoteMessage) {
                 setModalVisible(true);
-                setNotificationTitle(remoteMessage.notification.title);
-                setNotificationBody(remoteMessage.notification.body);
-                setNotificationData(remoteMessage.data);
+                setNotificationTitle(remoteMessage?.notification?.title);
+                setNotificationBody(remoteMessage?.notification?.body);
+                setNotificationData(remoteMessage?.data);
               }
             }, 4000);
           }
@@ -114,6 +115,7 @@ const App = () => {
           }}>
           <MainStackNavigator />
         </ContextPrimary.Provider>
+        <NotificationController />
         {/* {notificationData !== '' ? ( */}
         <Modal visible={modalVisible} onDismiss={() => setModalVisible(false)}>
           <View
