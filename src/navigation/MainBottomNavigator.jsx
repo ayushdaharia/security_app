@@ -121,22 +121,25 @@ const MainBottomNavigator = () => {
           <Tab.Screen
             name="Tickets"
             component={Tickets}
-            listeners={{
-              tabPress: e => {
-                // Prevent default action
-                e.preventDefault();
-              },
-            }}
+            // listeners={{
+            //   tabPress: e => {
+            //     // Prevent default action
+            //     e.preventDefault();
+            //   },
+            // }}
             options={{
               headerStyle: {backgroundColor: COLORS.lightWhite},
               headerShadowVisible: false,
               headerTitleAlign: 'center',
               tabBarIcon: ({color, focused}) => (
-                <Image
-                  source={focused ? icons.ticketActive : icons.ticket}
-                  style={{width: 25, height: 30}}
-                  tintColor={'gray'}
-                />
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('Tickets')}>
+                  <Image
+                    source={focused ? icons.ticketActive : icons.ticket}
+                    style={{width: 25, height: 30}}
+                    // tintColor={'gray'}
+                  />
+                </TouchableOpacity>
               ),
               headerLeft: () => (
                 <View

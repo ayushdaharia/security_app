@@ -21,7 +21,7 @@ const AddMainSP = () => {
           backgroundColor: '#F4F4F4',
           borderRadius: 5,
         }}>
-        {/* <Pressable
+        <Pressable
           onPress={() => setSelectedTab(1)}
           style={{
             width: '50%',
@@ -36,11 +36,11 @@ const AddMainSP = () => {
             }}>
             Raise Ticket
           </Text>
-        </Pressable> */}
+        </Pressable>
         <Pressable
           onPress={() => setSelectedTab(2)}
           style={{
-            width: '100%',
+            width: '50%',
             padding: 10,
             borderRadius: 5,
             backgroundColor: selectedTab === 2 ? '#000000' : null,
@@ -55,7 +55,7 @@ const AddMainSP = () => {
         </Pressable>
       </View>
 
-      {/* {selectedTab === 1 && <RaiseTicketForm />} */}
+      {selectedTab === 1 && <RaiseTicketForm />}
       {selectedTab === 2 && <AddVisitorForm />}
     </SafeAreaView>
   );

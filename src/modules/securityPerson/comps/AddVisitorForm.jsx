@@ -91,7 +91,7 @@ const AddVisitorForm = () => {
     } else {
       console.log({formValues_afterSubmit: result.data});
       alert('Succefully submited.');
-      navigation.goBack();
+      // navigation.goBack();
       setIsLoading(false);
       setFormValues({
         visitorName: '',
