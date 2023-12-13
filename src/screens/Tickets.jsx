@@ -43,7 +43,7 @@ const Tickets = () => {
     if (userRole) {
       setIsLoading(true);
       const branchId = await AsyncStorage.getItem('BRANCH_ID');
-      const userId = await AsyncStorage.getItem('USER_ID');
+      const authId = await AsyncStorage.getItem('ID_NEW');
       let url = '';
       if (userRole === 'SECURITY_MAINTENANCE') {
         url +=
@@ -52,7 +52,13 @@ const Tickets = () => {
           branchId +
           '&ticketType=SECURITY_APP';
       } else {
-        url += BASE_URL_C + 'securityApp/allTickets?userId=' + userId;
+        url +=
+          BASE_URL_C +
+          'securityApp/allTickets?branchId=' +
+          branchId +
+          '&userId=' +
+          authId +
+          '&ticketType=SECURITY_APP';
       }
       if (url !== '') {
         const data = await getData(url);
@@ -118,9 +124,13 @@ const Tickets = () => {
         }
         showsVerticalScrollIndicator={false}
         style={{marginBottom: 20}}>
-        {tickets.map((item, index) => (
-          <TicketCard key={index} data={item} setFetch={setFetch} />
-        ))}
+        {tickets.length === 0 ? (
+          <Text>No tickets available</Text>
+        ) : (
+          tickets.map((item, index) => (
+            <TicketCard key={index} data={item} setFetch={setFetch} />
+          ))
+        )}
       </ScrollView>
     </SafeAreaView>
   );

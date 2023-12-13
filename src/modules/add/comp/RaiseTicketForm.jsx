@@ -141,7 +141,7 @@ const RaiseTicketForm = () => {
       );
       return;
     } else {
-      const pId = await AsyncStorage.getItem('PATIENT_ID');
+      const authId = await AsyncStorage.getItem('ID_NEW');
       const branchId = await AsyncStorage.getItem('BRANCH_ID');
       const raisedByName = await AsyncStorage.getItem('USER_NAME');
       const raisedByMobile = await AsyncStorage.getItem('MOBILE_NO');
@@ -155,7 +155,7 @@ const RaiseTicketForm = () => {
         occupantPhoneNumber: formValues.room.occupantPhoneNumber,
         raisedBy: formValues.raisedByName || raisedByName,
         raisedByMobileNo: formValues.raisedByMobile || raisedByMobile,
-        raisedById: pId,
+        raisedById: authId,
         ticketType: 'SECURITY_APP',
         ticketCategory: 'SECURITY_APP',
         ticketStatus: 'TICKET_RAISED',

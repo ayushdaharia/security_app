@@ -148,10 +148,14 @@ const TicketCard = ({data, setFetch}) => {
             style={{
               backgroundColor:
                 data?.ticketStatus === 'TICKET_RAISED'
-                  ? 'red'
+                  ? '#000000'
                   : data?.ticketStatus === 'IN_PROGRESS'
                   ? 'orange'
-                  : 'green',
+                  : data?.ticketStatus === 'BLOCKED'
+                  ? 'red'
+                  : data?.ticketStatus === 'COMPLETED'
+                  ? 'green'
+                  : null,
               alignItems: 'center',
               justifyContent: 'center',
               padding: 5,

@@ -337,10 +337,14 @@ const TicketDetail = ({route}) => {
                   style={{
                     backgroundColor:
                       item?.ticketStatus === 'TICKET_RAISED'
-                        ? 'red'
+                        ? '#000000'
                         : item?.ticketStatus === 'IN_PROGRESS'
                         ? 'orange'
-                        : 'green',
+                        : item?.ticketStatus === 'BLOCKED'
+                        ? 'red'
+                        : item?.ticketStatus === 'COMPLETED'
+                        ? 'green'
+                        : null,
                     alignItems: 'center',
                     justifyContent: 'center',
                     padding: 5,
