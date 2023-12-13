@@ -81,8 +81,6 @@ const Tickets = () => {
     }
   };
 
-  // console.log({tickets});
-
   useEffect(() => {
     fetchRoomNameList();
   }, [isFocused, fetch]);
@@ -94,8 +92,6 @@ const Tickets = () => {
       fetchRoomNameList();
     }, 2000);
   }, []);
-
-  console.log({fetch});
 
   if (isLoading) {
     return (
