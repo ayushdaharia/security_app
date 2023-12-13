@@ -154,6 +154,7 @@ const LoginWithOTP = ({setIsOTPReceived, mobile, OTPRequest}) => {
       storeData('ROLE', decodedData.role);
       storeData('ID_NEW', decodedData.id.toString());
       storeData('MOBILE_NO', decodedData.sub);
+      storeData('USER_NAME', decodedData.name);
 
       console.log({decodedData: decodedData.sub});
       console.log({userID: decodedData.userID});

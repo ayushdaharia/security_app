@@ -25,6 +25,7 @@ const CustomDropdown = ({
   headingColor,
   propertyName,
   formValues,
+  modalTtile,
   borderColor,
 }) => {
   const [search, setSearch] = useState('');
@@ -71,7 +72,6 @@ const CustomDropdown = ({
           justifyContent: 'space-between',
           alignItems: 'center',
           backgroundColor: backgroundColor ? backgroundColor : null,
-
           marginVertical: 5,
           paddingLeft: 15,
           paddingRight: 15,
@@ -91,12 +91,12 @@ const CustomDropdown = ({
       </TouchableOpacity>
 
       <Modal
-        animationType="slide"
+        animationType="fade"
         transparent={true}
+        presentationStyle="overFullScreen"
         visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(false);
-        }}>
+        onDismiss={() => setModalVisible(false)}
+        onRequestClose={() => setModalVisible(false)}>
         <View
           style={{
             flex: 1,
@@ -134,34 +134,59 @@ const CustomDropdown = ({
               />
             ) : null}
 
-            <FlatList
-              data={filteredData}
-              renderItem={({item}) => (
-                <TouchableOpacity
-                  style={{
-                    width: '85%',
-                    alignSelf: 'center',
-                    height: 40,
-                    justifyContent: 'center',
-                    borderBottomWidth: 0.5,
-                    borderColor: '#8e8e8e',
-                  }}
-                  onPress={() => {
-                    setSelectedItem(Object.values(item).join(' '));
-                    setModalVisible(false);
-                    onSearch('');
-                    onSelect(item);
-                  }}>
-                  <Text
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <FlatList
+                data={filteredData}
+                renderItem={({item}) => (
+                  <TouchableOpacity
                     style={{
-                      fontWeight: '600',
-                      color: color ? color : '#000000',
+                      width: '85%',
+                      alignSelf: 'center',
+                      height: 40,
+                      justifyContent: 'center',
+                      borderBottomWidth: 0.5,
+                      borderColor: '#8e8e8e',
+                    }}
+                    disabled={item.disable ? item.disable : false}
+                    onPress={() => {
+                      console.log({item});
+                      setSelectedItem(Object.values(item).join(' '));
+                      setModalVisible(false);
+                      onSearch('');
+                      onSelect(item);
                     }}>
-                    {Object.values(item).join(' ')}
-                  </Text>
-                </TouchableOpacity>
-              )}
-            />
+                    <Text
+                      style={{
+                        fontWeight: '600',
+                        color: color ? color : '#000000',
+                      }}>
+                      {item.title1}
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              />
+              <View
+                style={{
+                  flexDirection: 'row',
+                }}>
+                <View
+                  style={{
+                    paddingRight: 5,
+                  }}>
+                  <TouchableOpacity onPress={() => setModalVisible(false)}>
+                    <Image
+                      source={icons.crossIcon}
+                      style={{
+                        height: 24,
+                        width: 24,
+                        tintColor: '#000000',
+                      }}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
           </View>
         </View>
       </Modal>

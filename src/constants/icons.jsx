@@ -19,6 +19,7 @@ import profileIcon from '../assets/icons/profileIcon.png';
 import profileIconActive from '../assets/icons/profileIconActive.png';
 import squareLeftIcon from '../assets/icons/squareLeftIcon.png';
 import chevronDown from '../assets/icons/chevronDown.png';
+import upChevron from '../assets/icons/upChevron.png';
 import uploadIcon from '../assets/icons/uploadIcon.png';
 import trashIcon from '../assets/icons/trashIcon.png';
 import peopleGroupIcon from '../assets/icons/peopleGroupIcon.png';
@@ -55,6 +56,7 @@ export default {
   profileIconActive,
   squareLeftIcon,
   chevronDown,
+  upChevron,
   uploadIcon,
   trashIcon,
   peopleGroupIcon,

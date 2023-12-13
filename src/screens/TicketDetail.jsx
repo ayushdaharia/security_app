@@ -15,10 +15,11 @@ import {getData} from '../global/services/apis/getApi';
 import {COLORS, SIZES, icons} from '../constants';
 import MarkTicketStatusModal from '../components/cards/ticketCard/MarkTicketStatusModal';
 import {bgColors} from '../global/apicall/apiCall';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const TicketDetail = ({route}) => {
-  const ticketId = route?.params?.ticketId;
-  // const ticketId = '8a1b2968-1462-4cb0-9cb6-0a0716689b5d';
+  const {ticketId, raisedByMobileNo, complain, roomType, roomNumber} =
+    route?.params;
 
   console.log({ticketId});
 
@@ -28,27 +29,26 @@ const TicketDetail = ({route}) => {
   const [ticketStatus, setTicketStatus] = useState('');
   const [fetch, setFetch] = useState(false);
   const [open, setOpen] = useState(false);
-  const [userRole, setUserRole] = useState('SECURITY_MAINTENANCE');
+  const [userRole, setUserRole] = useState('');
   const [refreshing, setRefreshing] = useState(false);
 
-  //   useEffect(() => {
-  //     const fetchUserRole = async () => {
-  //       try {
-  //         const role = await AsyncStorage.getItem('ROLE');
-  //         setUserRole(role);
-  //       } catch (error) {
-  //         console.error('Error fetching user role:', error);
-  //       }
-  //     };
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      try {
+        const role = await AsyncStorage.getItem('ROLE');
+        setUserRole(role);
+      } catch (error) {
+        console.error('Error fetching user role:', error);
+      }
+    };
 
-  //     fetchUserRole();
-  //   }, []);
+    fetchUserRole();
+  }, []);
 
   const fetchTicketDetail = async () => {
     setIsLoading(true);
     if (ticketId) {
       const url = BASE_URL_C + 'securityApp/ticket?ticketId=' + ticketId;
-
       const data = await getData(url);
       let tempData = [];
       if (data.error) {
@@ -83,14 +83,16 @@ const TicketDetail = ({route}) => {
     }, 2000);
   }, []);
 
-  console.log({ticketDetailRaised});
+  console.log({ticketDetail});
 
-  const ModaData = {
+  const ModalData = {
     ticketId: ticketId,
+    raisedBy: ticketDetail?.[0]?.raisedBy,
+    raisedByMobileNo: raisedByMobileNo,
     ticketStatus: ticketDetail?.[ticketDetailRaised.length - 1]?.ticketStatus,
   };
 
-  console.log({ticketStatus});
+  // console.log({ticketStatus});
 
   if (isLoading) {
     return (
@@ -166,7 +168,7 @@ const TicketDetail = ({route}) => {
                       fontSize: 13,
                       fontWeight: '400',
                     }}>
-                    Raised By Mobile: {item?.raisedByMobileNo}
+                    Raised By Mobile: {raisedByMobileNo}
                   </Text>
                 </View>
                 {userRole === 'SECURITY_MAINTENANCE' ? (
@@ -231,7 +233,7 @@ const TicketDetail = ({route}) => {
                     fontSize: 13,
                     fontWeight: '400',
                   }}>
-                  {`Room No: ${item?.roomNumber}  `}
+                  {`Room No: ${roomNumber}  `}
                 </Text>
                 <Text
                   style={{
@@ -240,9 +242,8 @@ const TicketDetail = ({route}) => {
                     fontSize: 13,
                     fontWeight: '400',
                   }}>
-                  {`Room Type: ${item?.roomType}  `}
+                  {`Room Type: ${roomType}  `}
                 </Text>
-
                 <Text
                   style={{
                     width: '100%',
@@ -250,7 +251,7 @@ const TicketDetail = ({route}) => {
                     fontSize: 13,
                     fontWeight: '400',
                   }}>
-                  {`Complain: ${item?.complain}  `}
+                  {`Complain: ${complain}  `}
                 </Text>
               </View>
             </View>
@@ -287,7 +288,8 @@ const TicketDetail = ({route}) => {
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-between',
-                  marginBottom: 5,
+                  alignItems: 'center',
+                  flexWrap: 'wrap',
                 }}>
                 <Text
                   style={{
@@ -307,15 +309,9 @@ const TicketDetail = ({route}) => {
                   }}>
                   Time: {item?.time?.split(':')?.slice(0, 2)?.join(':')}
                 </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  flexWrap: 'wrap',
-                }}>
                 <Text
                   style={{
+                    width: '100%',
                     color: '#494444',
                     fontSize: 13,
                     fontWeight: '400',
@@ -323,12 +319,13 @@ const TicketDetail = ({route}) => {
                   {`Remark: ${item?.remarks}  `}
                 </Text>
               </View>
+
               <View
                 style={{
                   backgroundColor: 'rgba(155, 149, 149, 0.74)',
                   height: 1,
                   width: '100%',
-                  marginVertical: 10,
+                  marginBottom: 10,
                 }}></View>
 
               <View
@@ -366,7 +363,7 @@ const TicketDetail = ({route}) => {
       <MarkTicketStatusModal
         open={open}
         setOpen={setOpen}
-        data={ModaData}
+        data={ModalData}
         setFetch={setFetch}
       />
     </SafeAreaView>

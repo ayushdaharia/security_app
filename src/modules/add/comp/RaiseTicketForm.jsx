@@ -26,16 +26,35 @@ import {handleRaiseTicket} from '../../../global/apicall/apiCall';
 import SearchRoom from '../../../components/roomAutocomplete/SearchRoom';
 import {saveData} from '../../../global/services/apis/postApi';
 import {BASE_URL_C} from '../../../global/utils/constantUrl';
+import {useIsFocused} from '@react-navigation/native';
 
 const RaiseTicketForm = () => {
   const [formValues, setFormValues] = useState({
-    patientName: '',
-    patientMobile: '',
+    raisedByMobile: '',
+    raisedByName: '',
     room: '',
     remark: '',
   });
   // const [files, setFiles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    const fetchUserDetail = async () => {
+      try {
+        const raisedBy = await AsyncStorage.getItem('USER_NAME');
+        const raisedByMobile = await AsyncStorage.getItem('MOBILE_NO');
+        setFormValues({
+          ...formValues,
+          raisedByName: raisedBy,
+          raisedByMobile: raisedByMobile,
+        });
+      } catch (error) {
+        console.error('Error fetching user role:', error);
+      }
+    };
+    fetchUserDetail();
+  }, [isFocused]);
 
   // const selectDoc = async () => {
   //   try {
@@ -112,18 +131,30 @@ const RaiseTicketForm = () => {
         60,
       );
       return;
+    } else if (formValues?.remark === '') {
+      ToastAndroid.showWithGravityAndOffset(
+        'Please enter remark',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+        0,
+        60,
+      );
+      return;
     } else {
       const pId = await AsyncStorage.getItem('PATIENT_ID');
       const branchId = await AsyncStorage.getItem('BRANCH_ID');
+      const raisedByName = await AsyncStorage.getItem('USER_NAME');
+      const raisedByMobile = await AsyncStorage.getItem('MOBILE_NO');
       const payload = {
         complain: formValues.remark,
-        remark: formValues.remark,
+        remarks: formValues.remark,
         branchId: branchId,
         roomId: formValues.room.id,
         occupantPatientId: formValues.room.occupantPatientId,
         occupantName: formValues.room.occupantName,
         occupantPhoneNumber: formValues.room.occupantPhoneNumber,
-        raisedBy: formValues.patientName,
+        raisedBy: formValues.raisedByName || raisedByName,
+        raisedByMobileNo: formValues.raisedByMobile || raisedByMobile,
         raisedById: pId,
         ticketType: 'SECURITY_APP',
         ticketCategory: 'SECURITY_APP',
@@ -150,8 +181,8 @@ const RaiseTicketForm = () => {
       alert('Succefully submited.');
       setIsLoading(false);
       setFormValues({
-        patientName: '',
-        patientMobile: '',
+        raisedByMobile: '',
+        raisedByName: '',
         room: '',
         remark: '',
       });
@@ -183,26 +214,30 @@ const RaiseTicketForm = () => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <SearchRoom formValues={formValues} setFormValues={setFormValues} />
         <CustomTextField
+          editable={false}
+          textColor={'#6f7275'}
           headingColor={'#A7A6A3'}
           borderColor={'#F6F6F6'}
           backgroundColor={'#F6F6F6'}
           heading="Raise By Name"
           placeHolder="Enter name"
-          value={formValues.patientName}
+          value={formValues.raisedByName}
           onChangeText={text =>
-            setFormValues({...formValues, patientName: text})
+            setFormValues({...formValues, raisedByName: text})
           }
         />
         <CustomTextField
+          editable={false}
           headingColor={'#A7A6A3'}
           borderColor={'#F6F6F6'}
+          textColor={'#6f7275'}
           backgroundColor={'#F6F6F6'}
           type="mobile"
           heading="Raised By Mobile"
           placeHolder="Enter phone number"
-          value={formValues.patientMobile}
+          value={formValues.raisedByMobile}
           onChangeText={text =>
-            setFormValues({...formValues, patientMobile: text})
+            setFormValues({...formValues, raisedByMobile: text})
           }
         />
 

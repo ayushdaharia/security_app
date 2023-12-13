@@ -15,14 +15,29 @@ import {icons} from '../../../constants';
 import {updateData} from '../../../global/services/apis/postApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BASE_URL_C} from '../../../global/utils/constantUrl';
+import CustomDropdown from '../../dropDown/CustomDropdown';
 
 const MarkTicketStatusModal = ({open, setOpen, data, setFetch}) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [remark, setRemark] = useState('');
+  // const [remark, setRemark] = useState('');
+  const [formValues, setFormValues] = useState({
+    status: '',
+    remark: '',
+  });
+
   const onPress = async () => {
-    if (remark === '') {
+    if (formValues.remark === '') {
       ToastAndroid.showWithGravityAndOffset(
-        'Please enter room',
+        'Please Enter Remark',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+        0,
+        60,
+      );
+      return;
+    } else if (formValues.status === '') {
+      ToastAndroid.showWithGravityAndOffset(
+        'Please Select Status',
         ToastAndroid.SHORT,
         ToastAndroid.BOTTOM,
         0,
@@ -34,23 +49,11 @@ const MarkTicketStatusModal = ({open, setOpen, data, setFetch}) => {
       const branchId = await AsyncStorage.getItem('BRANCH_ID');
       const payload = {
         ticketId: data?.ticketId,
-        remarks: remark,
-        complain: data?.complain,
-        branchId: branchId,
-        occupantPatientId: data?.occupantPatientId,
-        occupantName: data?.occupantName,
-        occupantPhoneNumber: data?.occupantPhoneNumber,
+        remarks: formValues.remark,
         raisedBy: data?.raisedBy,
         raisedById: pId,
         raisedByMobileNo: data?.raisedByMobileNo,
-        ticketType: 'SECURITY_APP',
-        ticketCategory: 'SECURITY_APP',
-        ticketStatus:
-          data?.ticketStatus === 'TICKET_RAISED'
-            ? 'IN_PROGRESS'
-            : data?.ticketStatus === 'IN_PROGRESS'
-            ? 'COMPLETED'
-            : 'PENDING',
+        ticketStatus: formValues.status,
       };
       const url = BASE_URL_C + 'securityApp/updateTicketStatus';
       console.log({payload});
@@ -67,15 +70,42 @@ const MarkTicketStatusModal = ({open, setOpen, data, setFetch}) => {
     if (result.error) {
       console.error(result.error);
       alert('Falied to Submit.');
+      ToastAndroid.showWithGravityAndOffset(
+        'Falied to Submit!',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+        0,
+        60,
+      );
       setIsLoading(false);
     } else {
       console.log({formValues_afterSubmit: result.data});
-      alert('Succefully submited.');
+      // alert('Succefully submited.');
+      ToastAndroid.showWithGravityAndOffset(
+        'Succefully submited!',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+        0,
+        60,
+      );
       setIsLoading(false);
-      setRemark('');
+      setFormValues({
+        remark: '',
+        status: '',
+      });
       setOpen(false);
       setFetch(true);
     }
+  };
+
+  const StatusList = [
+    {title1: 'IN_PROGRESS', disable: false},
+    {title1: 'BLOCKED', disable: false},
+    {title1: 'COMPLETED', disable: false},
+  ];
+  const handleItemSelect = selectedItem => {
+    setFormValues({...formValues, status: selectedItem.title1});
+    console.log('Selected Item:', selectedItem.title1);
   };
 
   if (isLoading) {
@@ -110,7 +140,7 @@ const MarkTicketStatusModal = ({open, setOpen, data, setFetch}) => {
         <View
           style={{
             width: '90%',
-            height: 245,
+            height: 300,
             backgroundColor: '#FFFFFF',
             borderRadius: 10,
             paddingHorizontal: 20,
@@ -147,19 +177,33 @@ const MarkTicketStatusModal = ({open, setOpen, data, setFetch}) => {
               </TouchableOpacity>
             </View>
           </View>
+          <CustomDropdown
+            heading="Select Status"
+            headingColor={'#A7A6A3'}
+            borderColor={'#F6F6F6'}
+            backgroundColor={'#F6F6F6'}
+            data={StatusList}
+            modalTtile={'Select Status'}
+            formValues={formValues}
+            onSelect={handleItemSelect}
+            placeholder="Select Status"
+            propertyName="status"
+            // selectedItemColor={COLORS.gray}
+            // borderColor={errorGender ? 'red' : COLORS.gray}
+          />
           <CustomTextField
             heading="Remarks"
             multiline={true}
             numberOfLines={5}
-            textFieldheight={100}
+            textFieldheight={70}
             textAlignVertical="top"
             width={'100%'}
             headingColor={'#A7A6A3'}
             borderColor={'#F6F6F6'}
             backgroundColor={'#F6F6F6'}
             placeHolder="Enter Remarks"
-            value={remark}
-            onChangeText={text => setRemark(text)}
+            value={formValues.remark}
+            onChangeText={text => setFormValues({...formValues, remark: text})}
           />
 
           <CustomButton

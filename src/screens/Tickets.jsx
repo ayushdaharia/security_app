@@ -24,25 +24,24 @@ const Tickets = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [fetch, setFetch] = useState(false);
 
-  const [userRole, setUserRole] = useState('SECURITY_MAINTENANCE');
+  const [userRole, setUserRole] = useState('');
 
-  // useEffect(() => {
-  //   const fetchUserRole = async () => {
-  //     try {
-  //       const role = await AsyncStorage.getItem('ROLE');
-  //       setUserRole(role);
-  //     } catch (error) {
-  //       console.error('Error fetching user role:', error);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      try {
+        const role = await AsyncStorage.getItem('ROLE');
+        setUserRole(role);
+      } catch (error) {
+        console.error('Error fetching user role:', error);
+      }
+    };
 
-  //   fetchUserRole();
-  // }, []);
+    fetchUserRole();
+  }, []);
 
   const fetchRoomNameList = async () => {
     if (userRole) {
       setIsLoading(true);
-      console.log({userRole});
       const branchId = await AsyncStorage.getItem('BRANCH_ID');
       const userId = await AsyncStorage.getItem('USER_ID');
       let url = '';
@@ -70,12 +69,13 @@ const Tickets = () => {
           }));
           setTickets(tempData);
           setIsLoading(false);
+          setFetch(false);
         }
       }
     }
   };
 
-  console.log({tickets});
+  // console.log({tickets});
 
   useEffect(() => {
     fetchRoomNameList();
@@ -88,6 +88,8 @@ const Tickets = () => {
       fetchRoomNameList();
     }, 2000);
   }, []);
+
+  console.log({fetch});
 
   if (isLoading) {
     return (

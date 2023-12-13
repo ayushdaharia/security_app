@@ -19,20 +19,19 @@ const TicketCard = ({data, setFetch}) => {
   const navigation = useNavigation();
   const [open, setOpen] = useState(false);
 
-  const [userRole, setUserRole] = useState('SECURITY_MAINTENANCE');
+  const [userRole, setUserRole] = useState('');
 
-  //   useEffect(() => {
-  //     const fetchUserRole = async () => {
-  //       try {
-  //         const role = await AsyncStorage.getItem('ROLE');
-  //         setUserRole(role);
-  //       } catch (error) {
-  //         console.error('Error fetching user role:', error);
-  //       }
-  //     };
-
-  //     fetchUserRole();
-  //   }, []);
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      try {
+        const role = await AsyncStorage.getItem('ROLE');
+        setUserRole(role);
+      } catch (error) {
+        console.error('Error fetching user role:', error);
+      }
+    };
+    fetchUserRole();
+  }, []);
 
   return (
     <View style={{flexDirection: 'row', marginVertical: 10}}>
@@ -70,6 +69,14 @@ const TicketCard = ({data, setFetch}) => {
             }}>
             Raised By: {data?.raisedBy}
           </Text>
+          <Text
+            style={{
+              color: '#494444',
+              fontSize: 13,
+              fontWeight: '400',
+            }}>
+            Mobile: {data?.raisedByMobileNo}
+          </Text>
         </View>
         <View
           style={{
@@ -85,7 +92,7 @@ const TicketCard = ({data, setFetch}) => {
               fontSize: 13,
               fontWeight: '400',
             }}>
-            {`Room No: ${data?.roomNumber}  `}
+            {`Room No: ${data?.roomNo}  `}
           </Text>
           <Text
             style={{
@@ -180,6 +187,10 @@ const TicketCard = ({data, setFetch}) => {
               onPress={() => {
                 navigation.navigate('TicketDetail', {
                   ticketId: data?.ticketId,
+                  complain: data?.complain,
+                  roomType: data?.roomType,
+                  roomNumber: data?.roomNo,
+                  raisedByMobileNo: data?.raisedByMobileNo,
                 });
               }}>
               <Image
