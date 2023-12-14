@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback, useContext} from 'react';
 import {COLORS, FONT, SIZES, color, images} from '../../constants';
 import OTPTextView from 'react-native-otp-textinput';
 import {useNavigation} from '@react-navigation/native';
@@ -23,10 +23,12 @@ import axios from 'axios';
 import {storeData} from '../../global/utils/util';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
+import {ContextPrimary} from '../../global/context/context';
 
 const LoginWithOTP = ({setIsOTPReceived, mobile, OTPRequest}) => {
   const navigation = useNavigation();
   const [otp, setOtp] = useState('');
+  const {changeImg, changeName} = useContext(ContextPrimary);
   const getFcmToken = async () => {
     var fcmToken = await AsyncStorage.getItem('fcmToken');
     console.log(fcmToken, 'the old Token');
@@ -223,6 +225,7 @@ const LoginWithOTP = ({setIsOTPReceived, mobile, OTPRequest}) => {
     console.log({ISACTIVE: userData.isActive});
     if (userData.isActive) {
       navigation.replace('Drawer');
+      changeImg(employee?.data?.imageURL);
     } else {
       navigation.replace('SetupProfile', {
         mobile: mobile,

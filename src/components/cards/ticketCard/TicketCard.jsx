@@ -15,23 +15,23 @@ import CustomButton from '../../customButton/CustomButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MarkTicketStatusModal from './MarkTicketStatusModal';
 
-const TicketCard = ({data, setFetch}) => {
+const TicketCard = ({data, setFetch, userRole}) => {
   const navigation = useNavigation();
   const [open, setOpen] = useState(false);
 
-  const [userRole, setUserRole] = useState('');
+  // const [userRole, setUserRole] = useState('');
 
-  useEffect(() => {
-    const fetchUserRole = async () => {
-      try {
-        const role = await AsyncStorage.getItem('ROLE');
-        setUserRole(role);
-      } catch (error) {
-        console.error('Error fetching user role:', error);
-      }
-    };
-    fetchUserRole();
-  }, []);
+  // useEffect(() => {
+  //   const fetchUserRole = async () => {
+  //     try {
+  //       const role = await AsyncStorage.getItem('ROLE');
+  //       setUserRole(role);
+  //     } catch (error) {
+  //       console.error('Error fetching user role:', error);
+  //     }
+  //   };
+  //   fetchUserRole();
+  // }, []);
 
   return (
     <View style={{flexDirection: 'row', marginVertical: 10}}>
@@ -195,6 +195,7 @@ const TicketCard = ({data, setFetch}) => {
                   roomType: data?.roomType,
                   roomNumber: data?.roomNo,
                   raisedByMobileNo: data?.raisedByMobileNo,
+                  userRole: userRole,
                 });
               }}>
               <Image

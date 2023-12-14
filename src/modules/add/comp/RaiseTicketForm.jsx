@@ -14,19 +14,12 @@ import React, {useEffect} from 'react';
 import {useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ActivityIndicator, Button} from 'react-native-paper';
-import DocumentPicker, {
-  DocumentPickerOptions,
-} from 'react-native-document-picker';
-import ImageCropPicker from 'react-native-image-crop-picker';
-import axios from 'axios';
-import {SIZES, icons} from '../../../constants';
 import CustomTextField from '../../../components/customTextField/CustomTextField';
 import CustomButton from '../../../components/customButton/CustomButton';
-import {handleRaiseTicket} from '../../../global/apicall/apiCall';
-import SearchRoom from '../../../components/roomAutocomplete/SearchRoom';
 import {saveData} from '../../../global/services/apis/postApi';
 import {BASE_URL_C} from '../../../global/utils/constantUrl';
 import {useIsFocused} from '@react-navigation/native';
+import SearchRoomRaiseTicket from '../../../components/roomAutocomplete/SearchRoomRaiseTicket';
 
 const RaiseTicketForm = () => {
   const [formValues, setFormValues] = useState({
@@ -212,7 +205,10 @@ const RaiseTicketForm = () => {
         paddingTop: 10,
       }}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <SearchRoom formValues={formValues} setFormValues={setFormValues} />
+        <SearchRoomRaiseTicket
+          formValues={formValues}
+          setFormValues={setFormValues}
+        />
         <CustomTextField
           editable={false}
           textColor={'#6f7275'}

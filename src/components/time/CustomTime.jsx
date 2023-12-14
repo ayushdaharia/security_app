@@ -133,6 +133,9 @@ const CustomTime = ({
 
   console.log({isTimePickerVisible});
 
+  const formatTime = time => {
+    return time.toLocaleTimeString('en-US', {hour12: true});
+  };
   return (
     <View>
       <Text style={{color: headingColor ? headingColor : '#000000'}}>
@@ -154,7 +157,7 @@ const CustomTime = ({
           onPress={showCustomTimePicker}
           style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={{color: textColor ? textColor : '#000000'}}>
-            {dateValue.toLocaleTimeString()}
+            {formatTime(dateValue)}
           </Text>
           <Image
             source={icons.clock}

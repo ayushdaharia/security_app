@@ -205,6 +205,13 @@ const MainBottomNavigator = () => {
       <Tab.Screen
         name="Visitors"
         component={Visitors}
+        listeners={{
+          tabPress: e => {
+            if (userRole === 'SECURITY_MAINTENANCE') {
+              e.preventDefault();
+            }
+          },
+        }}
         options={{
           headerStyle: {backgroundColor: COLORS.lightWhite},
           headerShadowVisible: false,
@@ -215,6 +222,9 @@ const MainBottomNavigator = () => {
                 focused ? icons.peopleGroupIconActive : icons.peopleGroupIcon
               }
               style={{width: 25, height: 30}}
+              tintColor={
+                userRole === 'SECURITY_MAINTENANCE' ? 'lightgray' : '#000000'
+              }
             />
           ),
           headerLeft: () => (

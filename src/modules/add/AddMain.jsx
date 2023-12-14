@@ -5,10 +5,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import RaiseTicketForm from './comp/RaiseTicketForm';
 import AddVisitorForm from './comp/AddVisitorForm';
 import {SIZES} from '../../constants';
+import {fetchUserRole} from '../../global/apicall/apiCall';
 
 const TopTab = createMaterialTopTabNavigator();
 
 const AddMain = () => {
+  const [userRole, setUserRole] = useState('');
+
+  useEffect(() => {
+    fetchUserRole(setUserRole);
+  }, []);
   return (
     <View
       style={{
@@ -40,7 +46,9 @@ const AddMain = () => {
           },
         }}>
         <TopTab.Screen name="Raise Ticket" component={RaiseTicketForm} />
-        <TopTab.Screen name="Add Visitor" component={AddVisitorForm} />
+        {userRole === 'SECURITY_MAINTENANCE' ? null : (
+          <TopTab.Screen name="Add Visitor" component={AddVisitorForm} />
+        )}
       </TopTab.Navigator>
     </View>
   );

@@ -14,14 +14,12 @@ import {BASE_URL_C} from '../global/utils/constantUrl';
 import {getData} from '../global/services/apis/getApi';
 import {COLORS, SIZES, icons} from '../constants';
 import MarkTicketStatusModal from '../components/cards/ticketCard/MarkTicketStatusModal';
-import {bgColors} from '../global/apicall/apiCall';
+import {bgColors, fetchUserRole} from '../global/apicall/apiCall';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const TicketDetail = ({route}) => {
-  const {ticketId, raisedByMobileNo, complain, roomType, roomNumber} =
+  const {ticketId, raisedByMobileNo, complain, roomType, roomNumber, userRole} =
     route?.params;
-
-  console.log({ticketId});
 
   const [ticketDetailRaised, setTicketDetailRaised] = useState([]);
   const [ticketDetail, setTicketDetail] = useState([]);
@@ -29,21 +27,12 @@ const TicketDetail = ({route}) => {
   const [ticketStatus, setTicketStatus] = useState('');
   const [fetch, setFetch] = useState(false);
   const [open, setOpen] = useState(false);
-  const [userRole, setUserRole] = useState('');
   const [refreshing, setRefreshing] = useState(false);
+  // const [userRole, setUserRole] = useState('');
 
-  useEffect(() => {
-    const fetchUserRole = async () => {
-      try {
-        const role = await AsyncStorage.getItem('ROLE');
-        setUserRole(role);
-      } catch (error) {
-        console.error('Error fetching user role:', error);
-      }
-    };
-
-    fetchUserRole();
-  }, []);
+  // useEffect(() => {
+  //   fetchUserRole(setUserRole);
+  // }, []);
 
   const fetchTicketDetail = async () => {
     setIsLoading(true);
@@ -65,6 +54,7 @@ const TicketDetail = ({route}) => {
         setTicketDetail(tempData);
         setTicketStatus(tempData?.[0]?.ticketStatus);
         setIsLoading(false);
+        setFetch(false);
         setTicketDetailRaised(
           tempData?.filter(obj => obj?.ticketStatus === 'TICKET_RAISED'),
         );

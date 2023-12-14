@@ -7,9 +7,11 @@ import {images} from '../constants';
 import {BASE_URL_C} from '../global/utils/constantUrl';
 import {getData} from '../global/services/apis/getApi';
 import {storeData} from '../global/utils/util';
+import {ContextPrimary} from '../global/context/context';
 
 const Splash = () => {
   const navigation = useNavigation();
+  const {changeImg, changeName} = useContext(ContextPrimary);
   const retrieve_Access_Token = async () => {
     try {
       const token = await AsyncStorage.getItem('ACCESS_TOKEN');
@@ -59,6 +61,7 @@ const Splash = () => {
           });
         }, 3000);
       } else {
+        changeImg(data?.data?.imageURL);
         setTimeout(() => {
           navigation.replace('Drawer');
         }, 3000);

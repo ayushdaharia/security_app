@@ -3,25 +3,24 @@ import {
   StyleSheet,
   RefreshControl,
   View,
-  Image,
   ScrollView,
   Pressable,
-  TouchableOpacity,
+  Text,
 } from 'react-native';
 import React, {useState, useEffect, useContext} from 'react';
-import {COLORS, SIZES, icons} from '../constants';
+import {SIZES, icons} from '../constants';
 import HomeCard from '../components/cards/home/HomeCard';
 import HomeCardRecentVisitors from '../components/cards/home/HomeCardRecentVisitors';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {
   fetchHomeCardValues,
+  fetchTicketList,
   fetchUserDataProfile,
+  fetchUserRole,
   fetchVisitorList,
 } from '../global/apicall/apiCall';
-import {Modal, Portal, Text, Button, Provider} from 'react-native-paper';
-import messaging from '@react-native-firebase/messaging';
 import {ContextPrimary} from '../global/context/context';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import TicketCard from '../components/cards/ticketCard/TicketCard';
 
 const formatDateToLong = dateString => {
   const options = {
@@ -43,15 +42,30 @@ const Home = () => {
   const [date, setDate] = useState(new Date());
   const [visitorsList, setVisitorsList] = useState([]);
   const [homeCardValues, setHomeCardValues] = useState([]);
-  const [profileData, setProfileData] = useState('');
-  const {changeImg, changeName} = useContext(ContextPrimary);
+  // const [profileData, setProfileData] = useState('');
+  // const {changeImg, changeName} = useContext(ContextPrimary);
   const isFocused = useIsFocused();
   const [refreshing, setRefreshing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [fetch, setFetch] = useState(false);
+  const [tickets, setTickets] = useState([]);
+
+  const [userRole, setUserRole] = useState('');
+
   useEffect(() => {
-    isFocused && fetchVisitorList(setVisitorsList);
-    isFocused && fetchHomeCardValues(setHomeCardValues);
-    isFocused && fetchUserDataProfile(setProfileData, changeImg);
-  }, [isFocused]);
+    fetchUserRole(setUserRole);
+  }, []);
+
+  useEffect(() => {
+    {
+      userRole === 'SECURITY_MAINTENANCE'
+        ? isFocused &&
+          fetchTicketList(setIsLoading, setTickets, setFetch, userRole)
+        : isFocused && fetchVisitorList(setVisitorsList);
+      isFocused && fetchHomeCardValues(setHomeCardValues);
+      // isFocused && fetchUserDataProfile(setProfileData, changeImg);
+    }
+  }, [isFocused, fetch, userRole]);
 
   const activityCard = [
     {
@@ -60,6 +74,7 @@ const Home = () => {
       value: homeCardValues?.VISITORS,
       bgC: '#F4527C',
       navigate: 'Visitors',
+      visibilty: userRole === 'SECURITY_MAINTENANCE' ? false : true,
     },
     {
       icon: icons.roomIcon,
@@ -67,14 +82,16 @@ const Home = () => {
       value: homeCardValues?.ROOMS,
       bgC: '#7F6BE2',
       navigate: 'Rooms',
+      visibilty: true,
     },
-    // {
-    //   icon: icons.ticketIcon,
-    //   title: 'My Tickets',
-    //   value: '40+',
-    //   bgC: '#3CCAAC',
-    //   navigate: 'Tickets',
-    // },
+    {
+      icon: icons.ticketIcon,
+      title: 'My Tickets',
+      value: homeCardValues?.TICKETS || '10',
+      bgC: '#3CCAAC',
+      navigate: 'Tickets',
+      visibilty: true,
+    },
     // {
     //   icon: null,
     //   title: '',
@@ -83,28 +100,13 @@ const Home = () => {
     // },
   ];
 
-  const [userRole, setUserRole] = useState('');
-
-  useEffect(() => {
-    const fetchUserRole = async () => {
-      try {
-        const role = await AsyncStorage.getItem('ROLE');
-        setUserRole(role);
-      } catch (error) {
-        console.error('Error fetching user role:', error);
-      }
-    };
-
-    fetchUserRole();
-  }, []);
-
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
       fetchVisitorList(setVisitorsList);
       fetchHomeCardValues(setHomeCardValues);
-      fetchUserDataProfile(setProfileData, changeImg);
+      // fetchUserDataProfile(setProfileData, changeImg);
     }, 2000);
   }, []);
 
@@ -137,9 +139,11 @@ const Home = () => {
             marginVertical: 10,
             gap: 20,
           }}>
-          {activityCard.map((item, index) => (
-            <HomeCard data={item} key={index} />
-          ))}
+          {activityCard.map((item, index) =>
+            item.visibilty === true ? (
+              <HomeCard data={item} key={index} />
+            ) : null,
+          )}
         </View>
         <View
           style={{
@@ -148,18 +152,42 @@ const Home = () => {
             alignItems: 'center',
           }}>
           <Text style={{color: '#000', fontSize: 20, fontWeight: '700'}}>
-            Recent Visitors
+            {userRole === 'SECURITY_MAINTENANCE'
+              ? 'Recent Tickets'
+              : 'Recent Visitors'}
           </Text>
 
-          <Pressable onPress={() => navigation.navigate('Visitors')}>
+          <Pressable
+            onPress={() => {
+              if (userRole === 'SECURITY_MAINTENANCE') {
+                navigation.navigate('Tickets');
+              } else {
+                navigation.navigate('Visitors');
+              }
+            }}>
             <Text style={{color: '#FF8556', fontSize: 16, fontWeight: '700'}}>
               More
             </Text>
           </Pressable>
         </View>
-        {visitorsList.map((item, index) => (
-          <HomeCardRecentVisitors data={item} key={index} />
-        ))}
+        {userRole === 'SECURITY_MAINTENANCE' ? (
+          tickets.length === 0 ? (
+            <Text style={{color: '#000000'}}>No tickets available</Text>
+          ) : (
+            tickets.map((item, index) => (
+              <TicketCard
+                key={index}
+                data={item}
+                setFetch={setFetch}
+                userRole={userRole}
+              />
+            ))
+          )
+        ) : (
+          visitorsList.map((item, index) => (
+            <HomeCardRecentVisitors data={item} key={index} />
+          ))
+        )}
       </ScrollView>
     </SafeAreaView>
   );
