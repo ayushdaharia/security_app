@@ -46,10 +46,10 @@ const AddMain = () => {
           },
         }}>
         <TopTab.Screen name="Raise Ticket" component={RaiseTicketForm} />
-        {userRole === 'SECURITY_MAINTENANCE' ? null : userRole ===
-          'SECURITY_PERSONNEL' ? (
+        {userRole === 'SECURITY_MAINTENANCE' ||
+        userRole === 'SECURITY_APPROVER' ? null : (
           <TopTab.Screen name="Add Visitor" component={AddVisitorForm} />
-        ) : null}
+        )}
       </TopTab.Navigator>
     </View>
   );
