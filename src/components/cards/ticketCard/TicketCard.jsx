@@ -148,7 +148,7 @@ const TicketCard = ({data, setFetch, userRole}) => {
             style={{
               backgroundColor:
                 data?.ticketStatus === 'TICKET_RAISED'
-                  ? '#000000'
+                  ? '#127DDD'
                   : data?.ticketStatus === 'IN_PROGRESS'
                   ? 'orange'
                   : data?.ticketStatus === 'BLOCKED'

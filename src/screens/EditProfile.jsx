@@ -179,7 +179,7 @@ const EditProfile = ({route}) => {
               marginTop: 10,
             }}>
             <TouchableOpacity onPress={() => captureImage()}>
-              <Text style={{color: '#A7A6A3'}}>Change Photo</Text>
+              <Text style={{color: '#000000'}}>Change Photo</Text>
             </TouchableOpacity>
           </View>
         </View>

@@ -208,7 +208,7 @@ const RoomCardPatient = ({data, setFetch}) => {
                 fontSize: 13,
                 fontWeight: '400',
               }}>
-              {`# Occupants: ${data.noOfVisitors || 0}`}
+              {`# Visitors: ${data.noOfVisitors || 0}`}
             </Text>
           </View>
           {(data.occupantPhoneNumber === null && data.occupantName === null) ||

@@ -327,7 +327,7 @@ const TicketDetail = ({route}) => {
                   style={{
                     backgroundColor:
                       item?.ticketStatus === 'TICKET_RAISED'
-                        ? '#000000'
+                        ? '#127DDD'
                         : item?.ticketStatus === 'IN_PROGRESS'
                         ? 'orange'
                         : item?.ticketStatus === 'BLOCKED'
