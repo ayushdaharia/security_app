@@ -131,8 +131,6 @@ const CustomTime = ({
     hideCustomTimePicker();
   };
 
-  console.log({isTimePickerVisible});
-
   const formatTime = time => {
     return time.toLocaleTimeString('en-US', {hour12: true});
   };

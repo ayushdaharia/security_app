@@ -19,6 +19,7 @@ import {COLORS, icons} from './src/constants';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {markApproved, markRejected} from './src/global/apicall/apiCall';
 import NotificationController from './src/global/NotificationController/Local';
+import {PaperProvider} from 'react-native-paper';
 
 const App = () => {
   const navigationRef = React.createRef();
@@ -113,7 +114,9 @@ const App = () => {
             userName,
             changeName,
           }}>
-          <MainStackNavigator />
+          <PaperProvider>
+            <MainStackNavigator />
+          </PaperProvider>
         </ContextPrimary.Provider>
         <NotificationController />
         {/* {notificationData !== '' ? ( */}
