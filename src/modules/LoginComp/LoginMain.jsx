@@ -166,12 +166,18 @@ const LoginMain = () => {
   return (
     <SafeAreaView
       style={{
-        flex: 1,
-        paddingVertical: 20,
+        // flex: 1,
+        // paddingVertical: 20,
         paddingHorizontal: 20,
         backgroundColor: '#FFFFFF',
       }}>
-      <ScrollView showsVerticalScrollIndicator={false} style={{flex: 1}}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={
+          {
+            // flex: 1
+          }
+        }>
         <View style={{justifyContent: 'center', alignItems: 'center'}}>
           <Image
             source={images.unocareLogo}

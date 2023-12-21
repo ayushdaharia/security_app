@@ -147,6 +147,7 @@ import {
   TextInput,
   View,
   Image,
+  Platform,
 } from 'react-native';
 import {Modal, Portal} from 'react-native-paper'; // Import Modal and Portal from react-native-paper
 import {fetchRoomNameList} from '../../global/apicall/apiCall';
@@ -171,7 +172,11 @@ const SearchRoom = ({formValues, setFormValues}) => {
   const calculateModalPosition = () => {
     if (inputRef.current) {
       inputRef.current.measureInWindow((x, y, width) => {
-        setModalPosition({top: y + 40, left: x, width});
+        setModalPosition({
+          top: y + (Platform.OS === 'ios' ? -15 : 40),
+          left: x,
+          width,
+        });
       });
     }
   };
