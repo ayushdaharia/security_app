@@ -94,7 +94,7 @@ const Visited = () => {
             fontWeight: '600',
             color: '#000000',
           }}
-          placeholder="Search Room"
+          placeholder="Search Visitors"
         />
       </View>
       <ScrollView
